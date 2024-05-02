@@ -1,17 +1,17 @@
 {
-  "user": "BNCServ",
-  "pass": "",
-  "status_prefix": "*",
-  "server": "bnc.snoonet.org",
-  "port": 5457,
-  "ssl": true,
-  "admins": [
-    "*!*@snoonet/staff/*",
-    "*!*@snoonet/manager/*",
-    "*!*@snoonet/owner/*",
-    "*!*@snoonet/founder/*"
-  ],
-  "log_channel": "##sysop",
-  "command_prefix": ".",
-  "bind_host_net": "127.0.0.0/16"
+    "user": "BNCServ",
+    "pass": "",
+    "status_prefix": "*",
+    "server": "bnc.snoonet.org",
+    "port": 5457,
+    "ssl": true,
+    "admins": [
+        "*!*@snoonet/staff/*",
+        "*!*@snoonet/manager/*",
+        "*!*@snoonet/owner/*",
+        "*!*@snoonet/founder/*"
+    ],
+    "log_channel": "##sysop",
+    "command_prefix": ".",
+    "bind_host_net": "127.0.0.0/16"
 }

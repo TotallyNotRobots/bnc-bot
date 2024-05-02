@@ -1,25 +1,80 @@
-# coding=utf-8
-from typing import TYPE_CHECKING
+from asyncio import AbstractEventLoop
+from typing import TYPE_CHECKING, Optional, overload
 
+from irclib.parser import Message, ParamList
+from typing_extensions import Self
+
+from bncbot.config import BNCData, BNCQueue, BNCUsers
 
 if TYPE_CHECKING:
-    from asyncirc.irc import ParamList, Message
     from bncbot.bot import Command
     from bncbot.conn import Conn
 
 
 class Event:
-    def __init__(self, *, conn: 'Conn' = None, base_event: 'Event' = None,
-                 nick: str = None, user: str = None, host: str = None,
-                 mask: str = None, chan: str = None) -> None:
+    @overload
+    def __init__(
+        self,
+        *,
+        conn: "Conn",
+        base_event: None = None,
+        nick: str,
+        user: str,
+        host: str,
+        mask: str,
+        chan: Optional[str] = None,
+    ) -> None: ...
+
+    @overload
+    def __init__(
+        self,
+        *,
+        conn: Optional["Conn"] = None,
+        base_event: "Event",
+        nick: Optional[str] = None,
+        user: Optional[str] = None,
+        host: Optional[str] = None,
+        mask: Optional[str] = None,
+        chan: Optional[str] = None,
+    ) -> None: ...
+
+    def __init__(
+        self,
+        *,
+        conn: Optional["Conn"] = None,
+        base_event: Optional["Event"] = None,
+        nick: Optional[str] = None,
+        user: Optional[str] = None,
+        host: Optional[str] = None,
+        mask: Optional[str] = None,
+        chan: Optional[str] = None,
+    ) -> None:
         if base_event:
-            self.conn = base_event.conn
-            self.nick = base_event.nick
-            self.user = base_event.user
-            self.host = base_event.host
-            self.mask = base_event.mask
-            self.chan = base_event.chan
+            self.conn: "Conn" = conn or base_event.conn
+            self.nick: str = nick or base_event.nick
+            self.user: str = user or base_event.user
+            self.host: str = host or base_event.host
+            self.mask: str = mask or base_event.mask
+            self.chan: str = chan or base_event.chan
         else:
+            if conn is None:
+                raise ValueError("'conn' must be set or inherited")
+
+            if nick is None:
+                raise ValueError("'nick' must be set or inherited")
+
+            if user is None:
+                raise ValueError("'user' must be set or inherited")
+
+            if host is None:
+                raise ValueError("'host' must be set or inherited")
+
+            if mask is None:
+                raise ValueError("'mask' must be set or inherited")
+
+            if chan is None:
+                raise ValueError("'chan' must be set or inherited")
+
             self.conn = conn
             self.nick = nick
             self.user = user
@@ -27,76 +82,169 @@ class Event:
             self.mask = mask
             self.chan = chan
 
-    def message(self, message: str, target: str = None) -> None:
+    def message(self, message: str, target: Optional[str] = None) -> None:
         if not target:
             assert self.chan
             target = self.chan
+
         self.conn.msg(target, message)
 
-    def notice(self, message: str, target: str = None) -> None:
+    def notice(self, message: str, target: Optional[str] = None) -> None:
         if not target:
             assert self.nick
             target = self.nick
+
         self.conn.notice(target, message)
 
     @property
-    def bnc_data(self):
+    def bnc_data(self) -> BNCData:
         return self.conn.bnc_data
 
     @property
-    def bnc_queue(self):
+    def bnc_queue(self) -> BNCQueue:
         return self.conn.bnc_queue
 
     @property
-    def bnc_users(self):
+    def bnc_users(self) -> BNCUsers:
         return self.conn.bnc_users
 
     @property
-    def event(self):
+    def event(self) -> Self:
         return self
 
     @property
-    def loop(self):
+    def loop(self) -> AbstractEventLoop:
         return self.conn.loop
 
     @property
-    def is_admin(self):
+    def is_admin(self) -> bool:
         return self.conn.is_admin(self.mask)
 
 
 class RawEvent(Event):
-    def __init__(self, *, conn: 'Conn' = None, base_event=None,
-                 nick: str = None, user: str = None, host: str = None,
-                 mask: str = None, chan: str = None, irc_rawline: 'Message' = None,
-                 irc_command: str = None, irc_paramlist: 'ParamList' = None) -> None:
-        super().__init__(
-            conn=conn, base_event=base_event, nick=nick, user=user, host=host,
-            mask=mask, chan=chan
-        )
+    @overload
+    def __init__(
+        self,
+        *,
+        conn: "Conn",
+        base_event: None = None,
+        nick: str,
+        user: str,
+        host: str,
+        mask: str,
+        chan: Optional[str] = None,
+        irc_rawline: "Message",
+        irc_command: str,
+        irc_paramlist: "ParamList",
+    ) -> None: ...
+
+    @overload
+    def __init__(
+        self,
+        *,
+        conn: Optional["Conn"] = None,
+        base_event: "Event",
+        nick: Optional[str] = None,
+        user: Optional[str] = None,
+        host: Optional[str] = None,
+        mask: Optional[str] = None,
+        chan: Optional[str] = None,
+        irc_rawline: Optional["Message"] = None,
+        irc_command: Optional[str] = None,
+        irc_paramlist: Optional["ParamList"] = None,
+    ) -> None: ...
+
+    def __init__(
+        self,
+        *,
+        conn: Optional["Conn"] = None,
+        base_event: Optional[Event] = None,
+        nick: Optional[str] = None,
+        user: Optional[str] = None,
+        host: Optional[str] = None,
+        mask: Optional[str] = None,
+        chan: Optional[str] = None,
+        irc_rawline: Optional["Message"] = None,
+        irc_command: Optional[str] = None,
+        irc_paramlist: Optional["ParamList"] = None,
+    ) -> None:
+        if base_event is not None:
+            super().__init__(
+                conn=conn,
+                base_event=base_event,
+                nick=nick,
+                user=user,
+                host=host,
+                mask=mask,
+                chan=chan,
+            )
+        else:
+            if conn is None:
+                raise ValueError("'conn' must be set or inherited")
+
+            if nick is None:
+                raise ValueError("'nick' must be set or inherited")
+
+            if user is None:
+                raise ValueError("'user' must be set or inherited")
+
+            if host is None:
+                raise ValueError("'host' must be set or inherited")
+
+            if mask is None:
+                raise ValueError("'mask' must be set or inherited")
+
+            super().__init__(
+                conn=conn,
+                nick=nick,
+                user=user,
+                host=host,
+                mask=mask,
+                chan=chan,
+            )
+
         self.irc_rawline = irc_rawline
         self.irc_command = irc_command
         self.irc_paramlist = irc_paramlist
 
 
 class CommandEvent(Event):
-    def __init__(self, *, conn: 'Conn' = None, base_event=None,
-                 nick: str = None, user: str = None, host: str = None,
-                 mask: str = None, chan: str = None, command: str,
-                 text: str = None, cmd_handler: 'Command' = None) -> None:
+    def __init__(
+        self,
+        *,
+        conn: Optional["Conn"] = None,
+        base_event: Event,
+        nick: Optional[str] = None,
+        user: Optional[str] = None,
+        host: Optional[str] = None,
+        mask: Optional[str] = None,
+        chan: Optional[str] = None,
+        command: str,
+        text: Optional[str] = None,
+        cmd_handler: "Command",
+    ) -> None:
         super().__init__(
-            conn=conn, base_event=base_event, nick=nick, user=user, host=host,
-            mask=mask, chan=chan
+            conn=conn,
+            base_event=base_event,
+            nick=nick,
+            user=user,
+            host=host,
+            mask=mask,
+            chan=chan,
         )
+
         self.command = command
         self.text = text
         self.cmd_handler = cmd_handler
 
-    def notice_doc(self):
+    def notice_doc(self) -> None:
         if not self.cmd_handler.doc:
             message = "{}{} requires additional arguments.".format(
                 self.conn.cmd_prefix, self.command
             )
         else:
-            message = "{}{} {}".format(self.conn.cmd_prefix, self.command, self.cmd_handler.doc)
+            message = "{}{} {}".format(
+                self.conn.cmd_prefix, self.command, self.cmd_handler.doc
+            )
 
         self.notice(message)

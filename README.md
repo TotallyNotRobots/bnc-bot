@@ -2,14 +2,14 @@
 A bot to handle BNC account requests for Snoonet
 
 ## Designed for
-- [Anope](https://anope.org) IRC Services v2.0.5
-- [ZNC](https://znc.in) v1.6.5
+- [Anope](https://anope.org) IRC Services v2.0.15
+- [ZNC](https://znc.in) v1.8.2
 - [InspIRCd](https://inspircd.org) with the `m_services_account` module
 
 This bot may work with other systems, but this is the setup it was specifically written to work with
 
 ## Requirements
-- Python 3.6+
+- Python 3.8+
 
 ## Features
 - Assigns each user a unique bindhost in the 127.0.0.0/16 range
@@ -17,7 +17,7 @@ This bot may work with other systems, but this is the setup it was specifically 
 - Tracks existing BNC user accounts to avoid overwriting existing accounts
 
 ## Installation
-1. Set up a Python 3.6 virtualenv
+1. Set up a Python 3.8 virtualenv
 2. `pip install -Ur requirements.txt`
 3. Copy `config.default.json` to `config.json` and modify the values as needed
 4. Run `python -m bncbot` to start the bot
@@ -48,5 +48,3 @@ Grant [username] BNC admin access
 
 #### `bncrefresh`
 Update the cached version of the BNC user list
-
-
