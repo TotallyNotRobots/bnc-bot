@@ -175,3 +175,9 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+*.pid
+config.json
+config.yaml
+bnc.json
+logs/*

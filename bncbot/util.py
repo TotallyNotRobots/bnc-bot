@@ -1,10 +1,9 @@
-# coding=utf-8
 import hashlib
 import random
 import secrets
 import string
-from ipaddress import IPv4Address, IPv6Address, IPv4Network, IPv6Network
-from typing import Union
+from ipaddress import IPv4Address, IPv4Network, IPv6Address, IPv6Network
+from typing import Iterable, Union
 
 VALID_USER_CHARS = string.ascii_letters + string.digits + "-_"
 VALID_USER_START_CHARS = string.ascii_letters
@@ -13,17 +12,19 @@ IPNetwork = Union[IPv4Network, IPv6Network]
 IPAddress = Union[IPv4Address, IPv6Address]
 
 
-def gen_pass(chars: str = (string.ascii_letters + string.digits), length: int = 16) -> str:
+def gen_pass(
+    chars: str = (string.ascii_letters + string.digits), length: int = 16
+) -> str:
     """
     Generate a password
     :param chars: The characters to use for password generation
     :return: The generated password
     """
-    return ''.join(secrets.choice(chars) for _ in range(length))
+    return "".join(secrets.choice(chars) for _ in range(length))
 
 
-def chunk_str(text, length=256):
-    chunks = (text[i:i + length] for i in range(0, len(text), length))
+def chunk_str(text: str, length: int = 256) -> Iterable[str]:
+    chunks = (text[i : i + length] for i in range(0, len(text), length))
     yield from chunks
 
 
@@ -43,7 +44,7 @@ def sanitize_username(user: str) -> str:
     start = user[:1]
     # Username must start with a letter
     if start not in VALID_USER_START_CHARS:
-        new_user = 'a'
+        new_user = "a"
         valid = False
     else:
         new_user = start
@@ -52,14 +53,14 @@ def sanitize_username(user: str) -> str:
         if c in VALID_USER_CHARS:
             new_user += c
         else:
-            new_user += '-'
+            new_user += "-"
             valid = False
 
     if valid:
         return user
 
     m = hashlib.md5(user.encode())
-    md5hash = int.from_bytes(m.digest(), 'big')
+    md5hash = int.from_bytes(m.digest(), "big")
     chars = VALID_USER_CHARS
     out = ""
     size = len(chars)
@@ -68,7 +69,7 @@ def sanitize_username(user: str) -> str:
         out += chars[rem]
 
     out += chars[md5hash]
-    new_user += '.' + out[:8]
+    new_user += "." + out[:8]
     return new_user
 
 
