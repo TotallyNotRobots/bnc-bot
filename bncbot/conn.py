@@ -212,7 +212,7 @@ class Conn:
         self.stopped_future.set_result(restart)
 
     async def handle_line(self, proto: "IrcProtocol", line: "Message") -> None:
-        raw_event = irc.make_event(self, line, proto)
+        raw_event = irc.make_event(self, line)
         for handler in self.handlers.get("raw", {}).get("", []):
             await self.launch_hook(raw_event, handler)
 
