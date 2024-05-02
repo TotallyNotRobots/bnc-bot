@@ -55,7 +55,7 @@ class Event:
             self.user: str = user or base_event.user
             self.host: str = host or base_event.host
             self.mask: str = mask or base_event.mask
-            self.chan: str = chan or base_event.chan
+            self.chan: Optional[str] = chan or base_event.chan
         else:
             if conn is None:
                 raise ValueError("'conn' must be set or inherited")
@@ -71,9 +71,6 @@ class Event:
 
             if mask is None:
                 raise ValueError("'mask' must be set or inherited")
-
-            if chan is None:
-                raise ValueError("'chan' must be set or inherited")
 
             self.conn = conn
             self.nick = nick

@@ -5,7 +5,21 @@ from pydantic import BaseModel, Field
 from typing_extensions import Self
 
 
-class BotConfig(BaseModel):
+class FileBasedDataModel(BaseModel):
+    @classmethod
+    def load_config(cls, path: Path) -> Self:
+        if path.exists():
+            text = path.read_text(encoding="utf8")
+            return cls.model_validate_json(text)
+
+        return cls()
+
+    def save_config(self, path: Path) -> None:
+        text = self.model_dump_json(indent=4, by_alias=True)
+        path.write_text(text, encoding="utf-8")
+
+
+class BotConfig(FileBasedDataModel):
     user: str = "BNCServ"
     password: str = Field(default="", alias="pass")
     status_prefix: str = "*"
@@ -23,32 +37,11 @@ class BotConfig(BaseModel):
     debug: bool = False
     log_to_file: bool = False
 
-    @classmethod
-    def load_config(cls, path: Path) -> Self:
-        text = path.read_text(encoding="utf8")
-        return cls.model_validate_json(text)
-
-    def save_config(self, path: Path) -> None:
-        text = self.model_dump_json(indent=4, by_alias=True)
-        path.write_text(text, encoding="utf-8")
-
 
 BNCUsers = Dict[str, Optional[str]]
 BNCQueue = Dict[str, str]
 
 
-class BNCData(BaseModel):
+class BNCData(FileBasedDataModel):
     queue: BNCQueue = {}
     users: BNCUsers = {}
-
-    @classmethod
-    def load_config(cls, path: Path) -> Self:
-        if path.exists():
-            text = path.read_text(encoding="utf8")
-            return cls.model_validate_json(text)
-
-        return cls()
-
-    def save_config(self, path: Path) -> None:
-        text = self.model_dump_json(indent=4, by_alias=True)
-        path.write_text(text, encoding="utf-8")
