@@ -43,8 +43,11 @@ class BNCData(BaseModel):
 
     @classmethod
     def load_config(cls, path: Path) -> Self:
-        text = path.read_text(encoding="utf8")
-        return cls.model_validate_json(text)
+        if path.exists():
+            text = path.read_text(encoding="utf8")
+            return cls.model_validate_json(text)
+
+        return cls()
 
     def save_config(self, path: Path) -> None:
         text = self.model_dump_json(indent=4, by_alias=True)
