@@ -1,0 +1,22 @@
+comment:
+  require_changes: true
+coverage:
+  status:
+    patch:
+      default: false
+      tests:
+        target: 100%
+        paths:
+        - tests/
+      core:
+        paths:
+        - bncbot/
+        target: 80%
+    project:
+      tests:
+        target: 100%
+        paths:
+        - tests/
+      core:
+        paths:
+        - bncbot/
