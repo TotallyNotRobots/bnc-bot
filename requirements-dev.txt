@@ -1,4 +1,4 @@
-mypy == 1.10.0
+mypy == 1.18.2
 pre-commit == 3.3.3
 pylint == 3.2.2
 pytest == 8.2.2
