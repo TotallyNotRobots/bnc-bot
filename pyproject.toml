@@ -1,122 +1,212 @@
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[project]
+name = "bnc-bot"
+dynamic = ["version"]
+description = "A bot to handle BNC account requests for Snoonet"
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+keywords = []
+authors = [{ name = "linuxdaemon", email = "linuxdaemon.irc@gmail.com" }]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: Implementation :: CPython",
+]
+dependencies = [
+    "async-irc == 0.2.0",
+    "typing_extensions == 4.15.0",
+    "pydantic == 2.11.9",
+]
+
+[project.urls]
+Documentation = "https://github.com/TotallyNotRobots/bnc-bot#readme"
+Issues = "https://github.com/TotallyNotRobots/bnc-bot/issues"
+Source = "https://github.com/TotallyNotRobots/bnc-bot"
+
+[project.scripts]
+bnc-bot = "bncbot.main:main"
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "bncbot/_version.py"
+
+[tool.hatch.env]
+requires = [
+    "hatch-pip-compile"
+]
+
+[tool.hatch.envs.default]
+type = "pip-compile"
+dependencies = [
+    "pre-commit==4.3.0",
+    "pytest==8.4.2",
+]
+pip-compile-hashes = true
+pip-compile-resolver = "uv"
+pip-compile-installer = "uv"
+
+[tool.hatch.envs.hatch-test]
+extra-dependencies = ["pytest-asyncio"]
+type = "pip-compile"
+pip-compile-constraint = "default"
+pip-compile-hashes = true
+pip-compile-resolver = "uv"
+pip-compile-installer = "uv"
+default-args = ["tests", "bncbot"]
+extra-args = ["-vv", "--doctest-modules"]
+[tool.hatch.envs.hatch-test.scripts]
+run = "pytest{env:HATCH_TEST_ARGS:} {args}"
+run-cov = "coverage run -m pytest{env:HATCH_TEST_ARGS:} {args}"
+cov-combine = "coverage combine"
+cov-report = ["coverage report --show-missing --skip-covered", "coverage xml"]
+
+[tool.hatch.envs.hatch-static-analysis]
+type = "pip-compile"
+pip-compile-hashes = true
+pip-compile-resolver = "uv"
+pip-compile-installer = "uv"
+pip-compile-constraint = "default"
+
+[tool.hatch.envs.hatch-build]
+type = "pip-compile"
+pip-compile-hashes = true
+pip-compile-resolver = "uv"
+pip-compile-installer = "uv"
+pip-compile-constraint = "default"
+
+[[tool.hatch.envs.hatch-test.matrix]]
+python = ["3.12", "3.11", "3.10", "3.9"]
+
+[tool.hatch.envs.types]
+template = "hatch-test"
+extra-dependencies = ["mypy==1.18.2"]
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:bncbot tests}"
+
+[tool.coverage.run]
+source_pkgs = ["bncbot", "tests"]
+branch = true
+omit = ["bncbot/_version.py"]
+
+[tool.coverage.paths]
+bncbot = ["bncbot", "*/bnc-bot/bncbot"]
+tests = ["tests", "*/bnc-bot/tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "if TYPE_CHECKING:",
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if sys.version_info",
+    "class .*\\(.*(Error|Exception)\\):",
+    "^ *\\.\\.\\.$",
+]
+
+[tool.nitpick]
+style = ["gh://TotallyNotRobots/nitpick/app-style-3.9.toml"]
+
 [tool.isort]
 line_length = 80
-multi_line_output = 3
-include_trailing_comma = true
-use_parentheses = true
-known_first_party = ["bncbot", "tests"]
+profile = "black"
 float_to_top = true
 
 [tool.black]
 line-length = 80
-target-version = ['py38']
-include = '\.pyi?$'
-exclude = '''
-(
-  /(
-      \.eggs         # exclude a few common directories in the
-    | \.git          # root of the project
-    | \.hg
-    | \.mypy_cache
-    | \.tox
-    | \.venv
-    | _build
-    | buck-out
-    | build
-    | dist
-    | venv
-  )/
-)
-'''
-
-[tool.pylint.main]
-analyse-fallback-blocks = true
-py-version = "3.8"
-
-[tool.pylint.messages_control]
-disable = [
-  "raw-checker-failed",
-  "no-else-return",
-  "nested-min-max",
-  "bad-mcs-classmethod-argument",
-  "bad-inline-option",
-  "locally-disabled",
-  "file-ignored",
-  "suppressed-message",
-  "useless-suppression",
-  "deprecated-pragma",
-  "use-symbolic-message-instead",
-  "invalid-name",
-  "duplicate-string-formatting-argument",
-  "missing-module-docstring",
-  "missing-class-docstring",
-  "missing-function-docstring",
-  "consider-using-f-string",
-  "consider-using-dict-items",
-  "consider-using-with",
-  "consider-using-min-builtin",
-  "arguments-renamed",
-  "use-maxsplit-arg",
-  "consider-iterating-dictionary",
-  "redefined-outer-name",
-  "unused-argument",
-  "broad-except",
-  "ungrouped-imports",
-  "wrong-import-position",
-  "arguments-differ",
-  "too-many-arguments",
-  "too-many-locals",
-  "too-many-statements",
-  "too-many-branches",
-  "protected-access",
-  "duplicate-code",
-  "no-else-raise",
-  "arguments-out-of-order",
-  "redefined-builtin",
-  "no-else-continue",
-  "unnecessary-comprehension",
-  "no-value-for-parameter",
-  "too-few-public-methods",
-  "fixme",
-  "too-many-public-methods",
-  "missing-timeout",
-  "not-callable",
-  "unnecessary-lambda-assignment",
-  "abstract-method",
-  "consider-using-generator",
-  "too-many-return-statements",
-  "line-too-long",
-  "too-many-instance-attributes",
-  "broad-exception-raised",
-  "use-implicit-booleaness-not-comparison",
-]
-
-enable = ["c-extension-no-member"]
-
-[tool.pylint.typecheck]
-generated-members = "(requests\\.)?codes\\.[a-zA-Z0-9_]+"
+target-version = ["py39"]
 
 [tool.mypy]
-namespace_packages = true
-python_version = "3.8"
-warn_unused_configs = true
-strict = true
+python_version = "3.9"
 ignore_missing_imports = true
-check_untyped_defs = true
 show_error_codes = true
 warn_unused_ignores = true
 warn_redundant_casts = true
-# strict_equality = true
-follow_imports = "silent"
-disallow_any_generics = true
-no_implicit_reexport = true
-
-# for strict mypy: (this is the tricky one :-))
+extra_checks = true
+strict = true
+disallow_untyped_calls = true
 disallow_untyped_defs = true
+allow_redefinition = false
+
+[tool.flynt]
+transform-concats = true
+transform-joins = true
+line-length = 120
+aggressive = true
 
 [tool.commitizen]
 name = "cz_conventional_commits"
-tag_format = "v$version"
-version_scheme = "semver"
 version_provider = "scm"
 update_changelog_on_bump = true
 major_version_zero = true
+
+[tool.check-spdx-header]
+headers = [
+    "2019 Snoonet",
+    "2020-present linuxdaemon <linuxdaemon.irc@gmail.com>",
+]
+
+[tool.ruff]
+line-length = 80
+target-version = 'py39'
+
+[tool.ruff.format]
+docstring-code-format = true
+line-ending = "lf"
+skip-magic-trailing-comma = true
+
+[tool.ruff.lint]
+ignore-init-module-imports = false
+extend-safe-fixes = [
+    "EM101",
+    "EM102",
+    "EM103",
+    "F401",
+    "FLY002",
+    "TCH001",
+    "TCH002",
+    "TRY400",
+    "SIM117",
+    "SIM108",
+    "ANN201",
+    "D415",
+    "D200",
+    "UP006",
+    "UP007",
+    "FA102",
+]
+extend-ignore = ["D"]
+# select = ["ALL"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*.py" = [
+    "S101", # Allow asserts in tests
+]
+
+[tool.ruff.lint.pycodestyle]
+max-line-length = 100
+
+[tool.ruff.lint.isort]
+split-on-trailing-comma = false
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.autoflake]
+remove-all-unused-imports = true
+in-place = true
+
+[tool.pytest.ini_options]
+filterwarnings = ["error"]
+asyncio_mode = "auto"

@@ -1,11 +1,17 @@
+# SPDX-FileCopyrightText: 2019 Snoonet
+# SPDX-FileCopyrightText: 2020-present linuxdaemon <linuxdaemon.irc@gmail.com>
+#
+# SPDX-License-Identifier: MIT
+
 """
 Utility functions for working with asyncio
 """
 
 import asyncio
+from collections.abc import Awaitable
 from datetime import timedelta
 from functools import partial
-from typing import Any, Awaitable, Callable, NoReturn, TypeVar, Union, cast
+from typing import Any, Callable, NoReturn, TypeVar, Union, cast
 
 from typing_extensions import TypeGuard
 
@@ -13,7 +19,7 @@ _T = TypeVar("_T")
 
 
 def is_coro(
-    func: Union[Callable[..., Awaitable[_T]], Callable[..., _T]]
+    func: Union[Callable[..., Awaitable[_T]], Callable[..., _T]],
 ) -> TypeGuard[Callable[..., Awaitable[_T]]]:
     return asyncio.iscoroutinefunction(func)
 

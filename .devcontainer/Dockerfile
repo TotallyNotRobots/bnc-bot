@@ -1,19 +1,14 @@
-FROM mcr.microsoft.com/devcontainers/python:3.8
+FROM mcr.microsoft.com/devcontainers/python:3.12
 
 RUN \
-    pipx uninstall pydocstyle \
-    && pipx uninstall pycodestyle \
-    && pipx uninstall mypy \
+    pipx uninstall mypy \
     && pipx uninstall pylint \
     && pipx uninstall pytest \
     && pipx uninstall flake8 \
-    && pipx uninstall black
+    && pipx uninstall black \
+    && pipx install commitizen \
+    && pip install -U hatch hatch-containers hatch-pip-compile
 
-RUN pipx install commitizen
+RUN su vscode -c "hatch config set dirs.env.virtual /home/vscode/.virtualenvs"
 
-RUN umask 0002 \
-    && mkdir -p ${PIPX_BIN_DIR} \
-    && chown -R "vscode:pipx" ${PIPX_HOME} \
-    && chmod -R g+r+w "${PIPX_HOME}"
-
-ENV SHELL /bin/bash
+ENV SHELL=/bin/bash

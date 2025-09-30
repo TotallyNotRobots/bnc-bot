@@ -1,0 +1,54 @@
+name: Update .pre-commit-config.yaml
+
+on:
+  schedule:
+    - cron: '0 3 * * 1' # Every Monday at 03:00 UTC
+  workflow_dispatch:
+
+jobs:
+  update-pre-commit-config:
+    permissions:
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+
+      - name: Set up Python
+        uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6
+        with:
+          python-version: '3.12'
+
+      - name: Install Hatch
+        run: pip install --upgrade hatch
+
+      - name: Set up Git user
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Update .pre-commit-config.yaml
+        run: hatch run pre-commit autoupdate --freeze
+
+      - name: Check for changes
+        id: changes
+        run: |
+          git add .pre-commit-config.yaml
+          if git diff --cached --quiet; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create Pull Request
+        if: steps.changes.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e # v7
+        with:
+          commit-message: "chore(deps): Update .pre-commit-config.yaml"
+          title: "chore(deps): Update .pre-commit-config.yaml"
+          body: "Automated update of .pre-commit-config.yaml via scheduled workflow."
+          branch: "update/pre-commit-config-yaml"
+          base: ${{ github.ref_name }}
+          labels: "update"
+          reviewers: "linuxdaemon"

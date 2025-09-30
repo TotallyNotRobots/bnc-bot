@@ -181,3 +181,4 @@ config.json
 config.yaml
 bnc.json
 logs/*
+bncbot/_version.py

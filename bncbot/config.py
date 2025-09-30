@@ -1,3 +1,8 @@
+# SPDX-FileCopyrightText: 2019 Snoonet
+# SPDX-FileCopyrightText: 2020-present linuxdaemon <linuxdaemon.irc@gmail.com>
+#
+# SPDX-License-Identifier: MIT
+
 from pathlib import Path
 from typing import Dict, List, Optional
 
@@ -26,7 +31,7 @@ class BotConfig(FileBasedDataModel):
     server: str = "bnc.snoonet.org"
     port: int = 5457
     ssl: bool = True
-    admins: List[str] = [
+    admins: list[str] = [
         "*!*@snoonet/staff/*",
         "*!*@snoonet/manager/*",
     ]
@@ -38,8 +43,8 @@ class BotConfig(FileBasedDataModel):
     log_to_file: bool = False
 
 
-BNCUsers = Dict[str, Optional[str]]
-BNCQueue = Dict[str, str]
+BNCUsers = dict[str, Optional[str]]
+BNCQueue = dict[str, str]
 
 
 class BNCData(FileBasedDataModel):

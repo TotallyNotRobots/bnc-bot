@@ -1,95 +1,47 @@
-default_install_hook_types:
-- pre-commit
-- commit-msg
-minimum_pre_commit_version: "3.3.0"
-ci:
-  skip:
-  - pylint
-  - mypy
-exclude: ^\.vscode/.*$
 repos:
-- repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: 2c9f875913ee60ca25ce70243dc24d5b6415598c  # frozen: v4.6.0
-  hooks:
-  - id: trailing-whitespace
-    args: ['--markdown-linebreak-ext=md,markdown']
-  - id: end-of-file-fixer
-  - id: check-yaml
-  - id: check-added-large-files
-  - id: check-ast
-  - id: check-byte-order-marker
-  - id: check-merge-conflict
-  - id: debug-statements
-  - id: detect-private-key
-    exclude: tests/data/.*
-  - id: check-builtin-literals
-  - id: check-case-conflict
-  - id: check-docstring-first
-  - id: check-executables-have-shebangs
-  - id: check-json
-    exclude: '.devcontainer/.*'
-  - id: pretty-format-json
-    exclude: '.devcontainer/.*'
-    args:
-    - --indent
-    - '4'
-    - --autofix
-    - --no-sort-keys
-  - id: check-toml
-  - id: fix-encoding-pragma
-    args:
-    - --remove
-- repo: https://github.com/psf/black
-  rev: 3702ba224ecffbcec30af640c149f231d90aebdb  # frozen: 24.4.2
-  hooks:
-  - id: black
-- repo: https://github.com/pycqa/isort
-  rev: c235f5e450b4b84e58d114ed4c589cbf454175a3  # frozen: 5.13.2
-  hooks:
-  - id: isort
-- repo: https://github.com/pre-commit/pygrep-hooks
-  rev: 3a6eb0fadf60b3cccfd80bad9dbb6fae7e47b316  # frozen: v1.10.0
-  hooks:
-  - id: python-no-eval
-  - id: python-no-log-warn
-- repo: https://github.com/asottile/pyupgrade
-  rev: 12af25eb252deaaecb6b259df40d01f42e716dc3  # frozen: v3.15.2
-  hooks:
-  - id: pyupgrade
-    args:
-    - "--py38-plus"
-
-- repo: local
-  hooks:
-  - id: mypy
-    name: mypy
-    entry: mypy
-    language: system
-    types: [python]
-  - id: pylint
-    name: pylint
-    entry: pylint
-    args:
-    - '-s'
-    - 'no'
-    language: system
-    types: [python]
-- repo: https://github.com/jumanjihouse/pre-commit-hook-yamlfmt
-  rev: 8d1b9cadaf854cb25bb0b0f5870e1cc66a083d6b  # frozen: 0.2.3
-  hooks:
-  - id: yamlfmt
-    args:
-    - --mapping
-    - '2'
-    - --sequence
-    - '2'
-    - --offset
-    - '0'
-    - --width
-    - '120'
-    - -e
-    - -p
-- repo: https://github.com/commitizen-tools/commitizen
-  rev: faff6a61f4f53585a965addd06156eedf0027643  # frozen: v3.25.0
-  hooks:
-  - id: commitizen
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: "cc981fcb065527b6de0033b0cbf0432e69781901"  # frozen: v4.9.1
+    hooks:
+      - id: commitizen
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: "3e8a8703264a2f4a69428a0aa4dcb512790b2c8c"  # frozen: v6.0.0
+    hooks:
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+  - repo: https://github.com/psf/black
+    rev: "af0ba72a73598c76189d6dd1b21d8532255d5942"  # frozen: 25.9.0
+    hooks:
+      - id: black
+  - repo: https://github.com/pycqa/isort
+    rev: "c8ab4a5b21bac924d106e3103dd7c979fdd0f9bc"  # frozen: 6.0.1
+    hooks:
+      - id: isort
+  - repo: https://github.com/andreoliwa/nitpick
+    rev: "2bdfd4e7aa1fa2eea0d83fd0c0e0ba4fb55ba1e3"  # frozen: v0.36.0
+    hooks:
+      - id: nitpick
+  - repo: "https://github.com/TotallyNotRobots/check-spdx-header"
+    rev: '9f8768b9c1e5a35bbf5542a15ebe0af398f18888'  # frozen: 0.1.1
+    hooks:
+      - id: fix-spdx-header
+  - repo: https://github.com/ikamensh/flynt
+    rev: "97be693bf18bc2f050667dd282d243e2824b81e2"  # frozen: 1.0.6
+    hooks:
+      - id: flynt
+  - repo: https://github.com/codespell-project/codespell
+    rev: '63c8f8312b7559622c0d82815639671ae42132ac'  # frozen: v2.4.1
+    hooks:
+      - additional_dependencies:
+          - tomli ; python_version < '3.11'
+        id: codespell
+  - repo: https://github.com/asottile/pyupgrade
+    rev: '37bfa06d791fd38fb4e54910b36a2ff57641b074'  # frozen: v3.20.0
+    hooks:
+      - id: pyupgrade
+        args:
+          - --py39-plus
+minimum_pre_commit_version: 2.18.0
+default_install_hook_types:
+  - pre-commit
+  - pre-push
+  - commit-msg

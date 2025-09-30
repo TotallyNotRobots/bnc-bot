@@ -1,5 +1,11 @@
+# SPDX-FileCopyrightText: 2019 Snoonet
+# SPDX-FileCopyrightText: 2020-present linuxdaemon <linuxdaemon.irc@gmail.com>
+#
+# SPDX-License-Identifier: MIT
+
 import asyncio
 import re
+from collections.abc import Sequence
 from functools import partial
 from itertools import chain
 from typing import (
@@ -11,7 +17,6 @@ from typing import (
     List,
     NamedTuple,
     Optional,
-    Sequence,
     TypedDict,
     TypeVar,
 )
@@ -38,12 +43,12 @@ class Command(NamedTuple):
 
 
 class Handlers(TypedDict):
-    raw: Dict[str, List[Callable[..., Any]]]
-    command: Dict[str, Command]
+    raw: dict[str, list[Callable[..., Any]]]
+    command: dict[str, Command]
 
 
 HANDLERS = Handlers(
-    {"command": {}, "raw": DefaultDict[str, List[Callable[..., Any]]](list)}
+    {"command": {}, "raw": DefaultDict[str, list[Callable[..., Any]]](list)}
 )
 
 _T = TypeVar("_T")
@@ -96,7 +101,7 @@ def on_join(conn: "Conn", chan: str, nick: str) -> None:
 
 
 @raw("318")
-async def on_whois_end(conn: "Conn", irc_paramlist: List[str]) -> None:
+async def on_whois_end(conn: "Conn", irc_paramlist: list[str]) -> None:
     to_remove = []
     for name, fut in conn.futures.items():
         if name.startswith("whois") and name.endswith(irc_paramlist[1]):
@@ -108,16 +113,16 @@ async def on_whois_end(conn: "Conn", irc_paramlist: List[str]) -> None:
 
 
 @raw("330")
-async def on_whois_acct(conn: "Conn", irc_paramlist: List[str]) -> None:
+async def on_whois_acct(conn: "Conn", irc_paramlist: list[str]) -> None:
     if irc_paramlist[-1] == "is logged in as":
-        fut = conn.futures.get("whois_acct_" + irc_paramlist[1])
+        fut = conn.futures.get(f"whois_acct_{irc_paramlist[1]}")
         if fut:
             fut.set_result(irc_paramlist[2])
-            del conn.futures["whois_acct_" + irc_paramlist[1]]
+            del conn.futures[f"whois_acct_{irc_paramlist[1]}"]
 
 
 @raw("NOTICE")
-async def on_notice(irc_paramlist: List[str], conn: "Conn", nick: str) -> None:
+async def on_notice(irc_paramlist: list[str], conn: "Conn", nick: str) -> None:
     """Handle NickServ info responses"""
     message = irc_paramlist[-1]
     if nick.lower() == "nickserv" and ":" in message:
@@ -133,7 +138,7 @@ async def on_notice(irc_paramlist: List[str], conn: "Conn", nick: str) -> None:
 @raw("PRIVMSG")
 async def on_privmsg(
     event: "RawEvent",
-    irc_paramlist: List[str],
+    irc_paramlist: list[str],
     conn: "Conn",
     nick: str,
     host: str,
@@ -193,7 +198,7 @@ async def on_privmsg(
 
 
 @raw("NICK")
-async def on_nick(conn: "Conn", irc_paramlist: List[str], nick: str) -> None:
+async def on_nick(conn: "Conn", irc_paramlist: list[str], nick: str) -> None:
     if nick.lower() == conn.nick.lower():
         conn.nick = irc_paramlist[0]
 
@@ -348,7 +353,7 @@ async def cmd_requestbnc(
 ) -> None:
     """- Submits a request for a BNC account"""
     acct_fut: "asyncio.Future[str]" = asyncio.Future()
-    conn.futures["whois_acct_" + nick] = acct_fut
+    conn.futures[f"whois_acct_{nick}"] = acct_fut
     conn.send("WHOIS", nick)
     acct = await acct_fut
     if not acct:
