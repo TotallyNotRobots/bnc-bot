@@ -1,31 +1,31 @@
 repos:
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: "8519ca470e88f8c7eb30dfe31cad2b0dd8acfea2"  # frozen: v4.2.1
+    rev: "cc981fcb065527b6de0033b0cbf0432e69781901"  # frozen: v4.9.1
     hooks:
       - id: commitizen
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: "cef0300fd0fc4d2a87a85fa2093c6b283ea36f4b"  # frozen: v5.0.0
+    rev: "3e8a8703264a2f4a69428a0aa4dcb512790b2c8c"  # frozen: v6.0.0
     hooks:
       - id: end-of-file-fixer
       - id: trailing-whitespace
   - repo: https://github.com/psf/black
-    rev: "8a737e727ac5ab2f1d4cf5876720ed276dc8dc4b"  # frozen: 25.1.0
+    rev: "af0ba72a73598c76189d6dd1b21d8532255d5942"  # frozen: 25.9.0
     hooks:
       - id: black
   - repo: https://github.com/pycqa/isort
-    rev: "0a0b7a830386ba6a31c2ec8316849ae4d1b8240d"  # frozen: 6.0.0
+    rev: "c8ab4a5b21bac924d106e3103dd7c979fdd0f9bc"  # frozen: 6.0.1
     hooks:
       - id: isort
   - repo: https://github.com/andreoliwa/nitpick
-    rev: "36d4912df1f0bd2ed8cc535b57c5ba3b09ce3d46" # frozen: v0.35.0
+    rev: "2bdfd4e7aa1fa2eea0d83fd0c0e0ba4fb55ba1e3"  # frozen: v0.36.0
     hooks:
       - id: nitpick
   - repo: "https://github.com/TotallyNotRobots/check-spdx-header"
-    rev: 'c5b3cb2f735d44f46ad132426fca49f418d73ba6'  # frozen: 0.1.0a3
+    rev: '9f8768b9c1e5a35bbf5542a15ebe0af398f18888'  # frozen: 0.1.1
     hooks:
       - id: fix-spdx-header
   - repo: https://github.com/ikamensh/flynt
-    rev: "651c822fdcf45fffcf9743dc755085f32acb65e3" # frozen: 1.0.1
+    rev: "97be693bf18bc2f050667dd282d243e2824b81e2"  # frozen: 1.0.6
     hooks:
       - id: flynt
   - repo: https://github.com/codespell-project/codespell
@@ -35,7 +35,7 @@ repos:
           - tomli ; python_version < '3.11'
         id: codespell
   - repo: https://github.com/asottile/pyupgrade
-    rev: 'ce40a160603ab0e7d9c627ae33d7ef3906e2d2b2'  # frozen: v3.19.1
+    rev: '37bfa06d791fd38fb4e54910b36a2ff57641b074'  # frozen: v3.20.0
     hooks:
       - id: pyupgrade
         args:
