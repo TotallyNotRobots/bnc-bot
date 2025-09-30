@@ -1,3 +1,8 @@
+# SPDX-FileCopyrightText: 2019 Snoonet
+# SPDX-FileCopyrightText: 2020-present linuxdaemon <linuxdaemon.irc@gmail.com>
+#
+# SPDX-License-Identifier: MIT
+
 from asyncio import AbstractEventLoop
 from typing import TYPE_CHECKING, Optional, overload
 
@@ -236,12 +241,10 @@ class CommandEvent(Event):
 
     def notice_doc(self) -> None:
         if not self.cmd_handler.doc:
-            message = "{}{} requires additional arguments.".format(
-                self.conn.cmd_prefix, self.command
-            )
+            message = f"{self.conn.cmd_prefix}{self.command} requires additional arguments."
         else:
-            message = "{}{} {}".format(
-                self.conn.cmd_prefix, self.command, self.cmd_handler.doc
+            message = (
+                f"{self.conn.cmd_prefix}{self.command} {self.cmd_handler.doc}"
             )
 
         self.notice(message)

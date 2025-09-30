@@ -1,3 +1,8 @@
+# SPDX-FileCopyrightText: 2019 Snoonet
+# SPDX-FileCopyrightText: 2020-present linuxdaemon <linuxdaemon.irc@gmail.com>
+#
+# SPDX-License-Identifier: MIT
+
 import asyncio
 import inspect
 import ipaddress
@@ -27,8 +32,8 @@ class Conn:
         self.run_dir = Path().resolve()
         self._protocol: Optional[IrcProtocol] = None
         self.handlers = handlers
-        self.futures: Dict[str, "asyncio.Future[Any]"] = {}
-        self.locks: Dict[str, asyncio.Lock] = defaultdict(asyncio.Lock)
+        self.futures: dict[str, "asyncio.Future[Any]"] = {}
+        self.locks: dict[str, asyncio.Lock] = defaultdict(asyncio.Lock)
         self.loop = asyncio.get_running_loop()
         self.bnc_data = BNCData.load_config(self.data_file)
         self.stopped_future: "asyncio.Future[bool]" = asyncio.Future()
@@ -54,7 +59,7 @@ class Conn:
             },
         }
 
-        handlers: Dict[str, Dict[str, Any]] = {
+        handlers: dict[str, dict[str, Any]] = {
             "console": {
                 "class": "logging.StreamHandler",
                 "formatter": "brief",
@@ -65,12 +70,12 @@ class Conn:
 
         bncbot_handlers = ["console"]
         asyncio_handlers = ["console"]
-        loggers: Dict[str, Dict[str, Any]] = {
+        loggers: dict[str, dict[str, Any]] = {
             "bncbot": {"level": "DEBUG", "handlers": bncbot_handlers},
             "asyncio": {"level": "DEBUG", "handlers": asyncio_handlers},
         }
 
-        logging_conf: Dict[str, Any] = {
+        logging_conf: dict[str, Any] = {
             "version": 1,
             "formatters": formatters,
             "handlers": handlers,
@@ -204,7 +209,7 @@ class Conn:
 
     async def shutdown(self, restart: bool = False) -> None:
         self.chan_log(
-            "Bot {}...".format("shutting down" if not restart else "restarting")
+            f"Bot {'shutting down' if not restart else 'restarting'}..."
         )
         await asyncio.sleep(1)
         self.close()
@@ -313,7 +318,7 @@ class Conn:
             self.send(f"NOTICE {target} :{message}")
 
     @property
-    def admins(self) -> List[str]:
+    def admins(self) -> list[str]:
         return self.config.admins
 
     @property

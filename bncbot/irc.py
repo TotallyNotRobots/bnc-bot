@@ -1,3 +1,8 @@
+# SPDX-FileCopyrightText: 2019 Snoonet
+# SPDX-FileCopyrightText: 2020-present linuxdaemon <linuxdaemon.irc@gmail.com>
+#
+# SPDX-License-Identifier: MIT
+
 from typing import TYPE_CHECKING, Dict, Optional, Tuple
 
 from irclib.parser import Message
@@ -9,7 +14,7 @@ if TYPE_CHECKING:
 
     from bncbot.conn import Conn
 
-CMD_PARAMS: Dict[str, Tuple[str, ...]] = {
+CMD_PARAMS: dict[str, tuple[str, ...]] = {
     "PRIVMSG": ("chan", "msg"),
     "NOTICE": ("chan", "msg"),
     "JOIN": ("chan",),

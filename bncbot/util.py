@@ -1,11 +1,17 @@
+# SPDX-FileCopyrightText: 2019 Snoonet
+# SPDX-FileCopyrightText: 2020-present linuxdaemon <linuxdaemon.irc@gmail.com>
+#
+# SPDX-License-Identifier: MIT
+
 import hashlib
 import random
 import secrets
 import string
+from collections.abc import Iterable
 from ipaddress import IPv4Address, IPv4Network, IPv6Address, IPv6Network
-from typing import Iterable, Union
+from typing import Union
 
-VALID_USER_CHARS = string.ascii_letters + string.digits + "-_"
+VALID_USER_CHARS = f"{string.ascii_letters + string.digits}-_"
 VALID_USER_START_CHARS = string.ascii_letters
 
 IPNetwork = Union[IPv4Network, IPv6Network]
@@ -69,7 +75,7 @@ def sanitize_username(user: str) -> str:
         out += chars[rem]
 
     out += chars[md5hash]
-    new_user += "." + out[:8]
+    new_user += f".{out[:8]}"
     return new_user
 
 
