@@ -1,11 +1,20 @@
 {
-    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-    "extends": [
-        "github>TotallyNotRobots/renovate-config",
-        ":separateMajorReleases",
-        ":separateMultipleMajorReleases",
-        ":separateMultipleMinorReleases",
-        ":separatePatchReleases",
-        "docker:pinDigests"
-    ]
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "github>TotallyNotRobots/renovate-config",
+    ":separateMajorReleases",
+    ":separateMultipleMajorReleases",
+    ":separateMultipleMinorReleases",
+    ":separatePatchReleases",
+    "docker:pinDigests"
+  ],
+  "packageRules": [
+    {
+      "matchPackageNames": [
+        "/^aiofiles$/",
+        "/^types-aiofiles$/"
+      ],
+      "groupName": "aiofiles"
+    }
+  ]
 }

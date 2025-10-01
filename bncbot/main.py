@@ -11,13 +11,15 @@ import time
 from types import FrameType
 from typing import Optional
 
+import aiofiles
+
 from bncbot import bot
 from bncbot.conn import Conn
 
 
 async def async_main() -> bool:
-    with open(".bncbot.pid", "w", encoding="utf8") as pid_file:
-        pid_file.write(str(os.getpid()))
+    async with aiofiles.open(".bncbot.pid", "w", encoding="utf8") as pid_file:
+        await pid_file.write(str(os.getpid()))
 
     conn = Conn(bot.HANDLERS)
 
