@@ -11,6 +11,9 @@
   "poetry": {
     "enabled": false
   },
+  "pip_requirements": {
+    "enabled": false
+  },
   "packageRules": [
     {
       "matchPackageNames": [
