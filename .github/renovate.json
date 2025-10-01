@@ -8,6 +8,9 @@
     ":separatePatchReleases",
     "docker:pinDigests"
   ],
+  "poetry": {
+    "enabled": false
+  },
   "packageRules": [
     {
       "matchPackageNames": [
