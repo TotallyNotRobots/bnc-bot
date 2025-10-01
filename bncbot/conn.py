@@ -12,11 +12,10 @@ from collections import defaultdict
 from datetime import timedelta
 from fnmatch import fnmatch
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Callable, Optional, Union
 
 from asyncirc.protocol import IrcProtocol
 from asyncirc.server import Server
-from irclib.parser import Message
 
 from bncbot import irc, util
 from bncbot.async_util import call_func, timer
@@ -24,6 +23,8 @@ from bncbot.bot import Handlers
 from bncbot.config import BNCData, BNCQueue, BNCUsers, BotConfig
 
 if TYPE_CHECKING:
+    from irclib.parser import Message
+
     from bncbot.event import Event
 
 
@@ -32,11 +33,11 @@ class Conn:
         self.run_dir = Path().resolve()
         self._protocol: Optional[IrcProtocol] = None
         self.handlers = handlers
-        self.futures: dict[str, "asyncio.Future[Any]"] = {}
+        self.futures: dict[str, asyncio.Future[Any]] = {}
         self.locks: dict[str, asyncio.Lock] = defaultdict(asyncio.Lock)
         self.loop = asyncio.get_running_loop()
         self.bnc_data = BNCData.load_config(self.data_file)
-        self.stopped_future: "asyncio.Future[bool]" = asyncio.Future()
+        self.stopped_future: asyncio.Future[bool] = asyncio.Future()
         self.get_users_state: int = 0
         self.config = BotConfig.load_config(self.config_file)
         if not self.log_dir.exists():
@@ -145,7 +146,8 @@ class Conn:
 
     def send(self, *parts: str) -> None:
         if not self._protocol:
-            raise ValueError("Tried to send on closed protocol")
+            msg = "Tried to send on closed protocol"
+            raise ValueError(msg)
 
         self._protocol.send(" ".join(parts))
 
@@ -156,13 +158,13 @@ class Conn:
         """Should only be run periodically to keep the user list in sync"""
         self.get_users_state = 0
         self.bnc_users.clear()
-        user_list_fut: "asyncio.Future[None]" = asyncio.Future()
+        user_list_fut: asyncio.Future[None] = asyncio.Future()
         self.futures["user_list"] = user_list_fut
         self.send("znc listusers")
         await user_list_fut
 
         for user in self.bnc_users:
-            bindhost_fut: "asyncio.Future[str]" = asyncio.Future()
+            bindhost_fut: asyncio.Future[str] = asyncio.Future()
             self.futures["bindhost"] = bindhost_fut
             self.module_msg("controlpanel", f"Get BindHost {user}")
             self.bnc_users[user] = await bindhost_fut
@@ -245,7 +247,7 @@ class Conn:
     async def is_bnc_admin(self, name: str) -> bool:
         lock = self.locks["controlpanel_bncadmin"]
         async with lock:
-            fut: "asyncio.Future[bool]" = self.futures.setdefault(
+            fut: asyncio.Future[bool] = self.futures.setdefault(
                 "bncadmin", asyncio.Future()
             )
             self.module_msg("controlpanel", f"Get Admin {name}")

@@ -6,12 +6,13 @@
 from asyncio import AbstractEventLoop
 from typing import TYPE_CHECKING, Optional, overload
 
-from irclib.parser import Message, ParamList
 from typing_extensions import Self
 
 from bncbot.config import BNCData, BNCQueue, BNCUsers
 
 if TYPE_CHECKING:
+    from irclib.parser import Message, ParamList
+
     from bncbot.bot import Command
     from bncbot.conn import Conn
 
@@ -55,7 +56,7 @@ class Event:
         chan: Optional[str] = None,
     ) -> None:
         if base_event:
-            self.conn: "Conn" = conn or base_event.conn
+            self.conn: Conn = conn or base_event.conn
             self.nick: str = nick or base_event.nick
             self.user: str = user or base_event.user
             self.host: str = host or base_event.host
@@ -63,19 +64,24 @@ class Event:
             self.chan: Optional[str] = chan or base_event.chan
         else:
             if conn is None:
-                raise ValueError("'conn' must be set or inherited")
+                msg = "'conn' must be set or inherited"
+                raise ValueError(msg)
 
             if nick is None:
-                raise ValueError("'nick' must be set or inherited")
+                msg = "'nick' must be set or inherited"
+                raise ValueError(msg)
 
             if user is None:
-                raise ValueError("'user' must be set or inherited")
+                msg = "'user' must be set or inherited"
+                raise ValueError(msg)
 
             if host is None:
-                raise ValueError("'host' must be set or inherited")
+                msg = "'host' must be set or inherited"
+                raise ValueError(msg)
 
             if mask is None:
-                raise ValueError("'mask' must be set or inherited")
+                msg = "'mask' must be set or inherited"
+                raise ValueError(msg)
 
             self.conn = conn
             self.nick = nick
@@ -182,27 +188,27 @@ class RawEvent(Event):
             )
         else:
             if conn is None:
-                raise ValueError("'conn' must be set or inherited")
+                msg = "'conn' must be set or inherited"
+                raise ValueError(msg)
 
             if nick is None:
-                raise ValueError("'nick' must be set or inherited")
+                msg = "'nick' must be set or inherited"
+                raise ValueError(msg)
 
             if user is None:
-                raise ValueError("'user' must be set or inherited")
+                msg = "'user' must be set or inherited"
+                raise ValueError(msg)
 
             if host is None:
-                raise ValueError("'host' must be set or inherited")
+                msg = "'host' must be set or inherited"
+                raise ValueError(msg)
 
             if mask is None:
-                raise ValueError("'mask' must be set or inherited")
+                msg = "'mask' must be set or inherited"
+                raise ValueError(msg)
 
             super().__init__(
-                conn=conn,
-                nick=nick,
-                user=user,
-                host=host,
-                mask=mask,
-                chan=chan,
+                conn=conn, nick=nick, user=user, host=host, mask=mask, chan=chan
             )
 
         self.irc_rawline = irc_rawline

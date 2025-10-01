@@ -24,6 +24,7 @@ dependencies = [
     "async-irc == 0.2.0",
     "typing_extensions == 4.15.0",
     "pydantic == 2.11.9",
+    "aiofiles == 24.1.0",
 ]
 
 [project.urls]
@@ -54,6 +55,9 @@ dependencies = [
 pip-compile-hashes = true
 pip-compile-resolver = "uv"
 pip-compile-installer = "uv"
+post-install-commands = [
+    "hatch run pre-commit install -f"
+]
 
 [tool.hatch.envs.hatch-test]
 extra-dependencies = ["pytest-asyncio"]
@@ -89,9 +93,12 @@ python = ["3.12", "3.11", "3.10", "3.9"]
 
 [tool.hatch.envs.types]
 template = "hatch-test"
-extra-dependencies = ["mypy==1.18.2"]
+extra-dependencies = [
+    "mypy == 1.18.2",
+    "types-aiofiles == 24.1.0.20250822",
+]
 [tool.hatch.envs.types.scripts]
-check = "mypy --install-types --non-interactive {args:bncbot tests}"
+check = "mypy {args:bncbot tests}"
 
 [tool.coverage.run]
 source_pkgs = ["bncbot", "tests"]
@@ -186,7 +193,27 @@ extend-safe-fixes = [
     "UP007",
     "FA102",
 ]
-extend-ignore = ["D"]
+extend-ignore = [
+    "D",
+    "PLR2004",
+    "RUF006",
+    "ARG002",
+    "S101",
+    "ARG001",
+    "S606",
+    "S324",
+    "S311",
+    "SIM110",
+    "SIM118",
+    "RUF005",
+    "FA100",
+    "RET504",
+    "C400",
+    "FBT001",
+    "FBT002",
+    "PYI018",
+    "PT006",
+]
 # select = ["ALL"]
 
 [tool.ruff.lint.per-file-ignores]

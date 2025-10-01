@@ -5,6 +5,7 @@
 
 import asyncio
 import re
+from collections import defaultdict
 from collections.abc import Sequence
 from functools import partial
 from itertools import chain
@@ -12,9 +13,6 @@ from typing import (
     TYPE_CHECKING,
     Any,
     Callable,
-    DefaultDict,
-    Dict,
-    List,
     NamedTuple,
     Optional,
     TypedDict,
@@ -48,7 +46,7 @@ class Handlers(TypedDict):
 
 
 HANDLERS = Handlers(
-    {"command": {}, "raw": DefaultDict[str, list[Callable[..., Any]]](list)}
+    {"command": {}, "raw": defaultdict[str, list[Callable[..., Any]]](list)}
 )
 
 _T = TypeVar("_T")
@@ -73,10 +71,11 @@ def command(
     """Registers a function as a handler for a command"""
 
     def _decorate(func: _FuncT) -> _FuncT:
-        if func.__doc__:
-            doc = func.__doc__.strip().splitlines()[0].strip()
-        else:
-            doc = None
+        doc = (
+            func.__doc__.strip().splitlines()[0].strip()
+            if func.__doc__
+            else None
+        )
 
         cmd = Command(name, func, admin, require_param, doc)
         HANDLERS["command"].update(
@@ -318,15 +317,14 @@ async def cmd_addbnc(
     acct = text.split()[0]
     if acct in bnc_users:
         event.message("A BNC account with that name already exists")
+    elif conn.add_user(acct):
+        conn.chan_log(
+            f"{acct} has been set with BNC access and memoserved credentials."
+        )
     else:
-        if conn.add_user(acct):
-            conn.chan_log(
-                f"{acct} has been set with BNC access and memoserved credentials."
-            )
-        else:
-            conn.chan_log(
-                f"Error occurred when attempting to add {acct} to the BNC"
-            )
+        conn.chan_log(
+            f"Error occurred when attempting to add {acct} to the BNC"
+        )
 
 
 @command("bncsetadmin", admin=True)
@@ -352,7 +350,7 @@ async def cmd_requestbnc(
     bnc_queue: BNCQueue,
 ) -> None:
     """- Submits a request for a BNC account"""
-    acct_fut: "asyncio.Future[str]" = asyncio.Future()
+    acct_fut: asyncio.Future[str] = asyncio.Future()
     conn.futures[f"whois_acct_{nick}"] = acct_fut
     conn.send("WHOIS", nick)
     acct = await acct_fut
@@ -381,7 +379,7 @@ async def cmd_requestbnc(
         return
 
     async with conn.locks["ns_info"]:
-        ns_info_fut: "asyncio.Future[str]" = asyncio.Future()
+        ns_info_fut: asyncio.Future[str] = asyncio.Future()
         conn.futures["ns_info"] = ns_info_fut
         event.message(f"INFO {acct}", "NickServ")
         registered_time = await ns_info_fut
@@ -421,10 +419,9 @@ async def cmd_help(event: "CommandEvent", text: str, is_admin: bool) -> None:
         cmd = HANDLERS.get("command", {}).get(text.lower())
         if not cmd or (cmd.admin and not is_admin):
             message = "No such command."
+        elif not cmd.doc:
+            message = f"Command '{text}' has no additional documentation."
         else:
-            if not cmd.doc:
-                message = f"Command '{text}' has no additional documentation."
-            else:
-                message = f"{text} {cmd.doc}"
+            message = f"{text} {cmd.doc}"
 
         event.notice(message)

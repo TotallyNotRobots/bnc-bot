@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: MIT
 
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Optional
 
 from pydantic import BaseModel, Field
 from typing_extensions import Self
@@ -31,10 +31,7 @@ class BotConfig(FileBasedDataModel):
     server: str = "bnc.snoonet.org"
     port: int = 5457
     ssl: bool = True
-    admins: list[str] = [
-        "*!*@snoonet/staff/*",
-        "*!*@snoonet/manager/*",
-    ]
+    admins: list[str] = ["*!*@snoonet/staff/*", "*!*@snoonet/manager/*"]
     log_channel: str = "##log_channel"
     command_prefix: str = "."
     bind_host_net: str = "127.0.0.0/16"

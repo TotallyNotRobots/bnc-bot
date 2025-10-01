@@ -38,8 +38,8 @@ jobs:
     - name: Install Hatch
       run: pip install --upgrade hatch
 
-    # - name: Run static analysis
-    #   run: hatch fmt --check
+    - name: Run static analysis
+      run: hatch fmt --check
 
     - name: Run type check
       run: hatch run types:check
@@ -47,7 +47,7 @@ jobs:
     - name: Run pre-commit
       run: hatch run pre-commit run --all
       env:
-        SKIP: nitpick
+        SKIP: nitpick,hatch-fmt,hatch-types
 
     - name: Run tests
       run: hatch test --python ${{ matrix.python-version }} --cover --randomize --parallel --retries 2 --retry-delay 1
