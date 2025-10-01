@@ -3,14 +3,12 @@
 #
 # SPDX-License-Identifier: MIT
 
-from typing import TYPE_CHECKING, Dict, Optional, Tuple
-
-from irclib.parser import Message
+from typing import TYPE_CHECKING, Optional
 
 from bncbot.event import RawEvent
 
 if TYPE_CHECKING:
-    from asyncirc.protocol import IrcProtocol
+    from irclib.parser import Message
 
     from bncbot.conn import Conn
 

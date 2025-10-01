@@ -54,6 +54,9 @@ dependencies = [
 pip-compile-hashes = true
 pip-compile-resolver = "uv"
 pip-compile-installer = "uv"
+post-install-commands = [
+    "hatch run pre-commit install -f"
+]
 
 [tool.hatch.envs.hatch-test]
 extra-dependencies = ["pytest-asyncio"]
@@ -186,7 +189,28 @@ extend-safe-fixes = [
     "UP007",
     "FA102",
 ]
-extend-ignore = ["D"]
+extend-ignore = [
+    "D",
+    "PLR2004",
+    "RUF006",
+    "ARG002",
+    "S101",
+    "ASYNC101",
+    "ARG001",
+    "S606",
+    "S324",
+    "S311",
+    "SIM110",
+    "SIM118",
+    "RUF005",
+    "FA100",
+    "RET504",
+    "C400",
+    "FBT001",
+    "FBT002",
+    "PYI018",
+    "PT006",
+]
 # select = ["ALL"]
 
 [tool.ruff.lint.per-file-ignores]

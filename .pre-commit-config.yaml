@@ -40,6 +40,23 @@ repos:
       - id: pyupgrade
         args:
           - --py39-plus
+
+  - repo: local
+    hooks:
+      - id: hatch-fmt
+        name: hatch fmt
+        entry: hatch fmt --check
+        language: system
+        types:
+          - python
+        pass_filenames: true
+      - id: hatch-types
+        name: hatch types
+        entry: hatch run types:check
+        language: system
+        types:
+          - python
+        pass_filenames: true
 minimum_pre_commit_version: 2.18.0
 default_install_hook_types:
   - pre-commit

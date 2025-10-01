@@ -19,7 +19,7 @@
     // "forwardPorts": [],
 
     // Use 'postCreateCommand' to run commands after the container is created.
-    "postCreateCommand": "hatch run setup-dev",
+    "postCreateCommand": "hatch run python --version",
     // Configure tool-specific properties.
     // "customizations": {},
 
@@ -36,13 +36,12 @@
                 "github.vscode-github-actions",
                 "redhat.vscode-yaml",
                 "ms-python.black-formatter",
-                "ms-python.isort",
                 "ms-azuretools.vscode-docker",
                 "ms-python.mypy-type-checker",
                 "sunipkm.autodocstringpy"
             ],
             "settings": {
-                "python.defaultInterpreterPath": "~/.virtualenvs/py-irclib/bin/python",
+                "python.defaultInterpreterPath": "~/.virtualenvs/bnc-bot/bin/python",
                 "python.testing.pytestArgs": ["--no-cov"],
                 "terminal.integrated.profiles.linux": {
                     "zsh": {
