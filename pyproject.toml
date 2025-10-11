@@ -25,7 +25,7 @@ dependencies = [
     "async-irc == 0.2.0",
     "typing_extensions == 4.15.0",
     "pydantic == 2.11.9",
-    "aiofiles == 24.1.0",
+    "aiofiles ==25.1.0",
 ]
 
 [project.urls]
@@ -96,7 +96,7 @@ python = ["3.13", "3.12", "3.11", "3.10", "3.9"]
 template = "hatch-test"
 extra-dependencies = [
     "mypy == 1.18.2",
-    "types-aiofiles == 24.1.0.20250822",
+    "types-aiofiles ==25.1.0.20251011",
 ]
 [tool.hatch.envs.types.scripts]
 check = "mypy {args:bncbot tests}"
