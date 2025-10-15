@@ -9,13 +9,13 @@ import secrets
 import string
 from collections.abc import Iterable
 from ipaddress import IPv4Address, IPv4Network, IPv6Address, IPv6Network
-from typing import Union
+from typing import TypeAlias
 
 VALID_USER_CHARS = f"{string.ascii_letters + string.digits}-_"
 VALID_USER_START_CHARS = string.ascii_letters
 
-IPNetwork = Union[IPv4Network, IPv6Network]
-IPAddress = Union[IPv4Address, IPv6Address]
+IPNetwork: TypeAlias = IPv4Network | IPv6Network
+IPAddress: TypeAlias = IPv4Address | IPv6Address
 
 
 def gen_pass(

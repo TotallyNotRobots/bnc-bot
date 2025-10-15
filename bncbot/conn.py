@@ -9,10 +9,11 @@ import ipaddress
 import logging
 import logging.config
 from collections import defaultdict
+from collections.abc import Callable
 from datetime import timedelta
 from fnmatch import fnmatch
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Callable, Optional, Union
+from typing import TYPE_CHECKING, Any
 
 from asyncirc.protocol import IrcProtocol
 from asyncirc.server import Server
@@ -31,7 +32,7 @@ if TYPE_CHECKING:
 class Conn:
     def __init__(self, handlers: Handlers) -> None:
         self.run_dir = Path().resolve()
-        self._protocol: Optional[IrcProtocol] = None
+        self._protocol: IrcProtocol | None = None
         self.handlers = handlers
         self.futures: dict[str, asyncio.Future[Any]] = {}
         self.locks: dict[str, asyncio.Lock] = defaultdict(asyncio.Lock)
@@ -131,10 +132,10 @@ class Conn:
 
     def create_timer(
         self,
-        interval: Union[float, timedelta],
+        interval: float | timedelta,
         func: Callable[..., Any],
         *args: Any,
-        initial_interval: Optional[Union[float, timedelta]] = None,
+        initial_interval: float | timedelta | None = None,
     ) -> None:
         asyncio.ensure_future(
             timer(interval, func, *args, initial_interval=initial_interval),
@@ -340,7 +341,7 @@ class Conn:
         return self.config.command_prefix
 
     @property
-    def log_chan(self) -> Optional[str]:
+    def log_chan(self) -> str | None:
         return self.config.log_channel
 
     @property

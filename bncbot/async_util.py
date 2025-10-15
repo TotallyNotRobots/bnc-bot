@@ -8,24 +8,22 @@ Utility functions for working with asyncio
 """
 
 import asyncio
-from collections.abc import Awaitable
+from collections.abc import Awaitable, Callable
 from datetime import timedelta
 from functools import partial
-from typing import Any, Callable, NoReturn, TypeVar, Union, cast
-
-from typing_extensions import TypeGuard
+from typing import Any, NoReturn, TypeGuard, TypeVar, cast
 
 _T = TypeVar("_T")
 
 
 def is_coro(
-    func: Union[Callable[..., Awaitable[_T]], Callable[..., _T]],
+    func: Callable[..., Awaitable[_T]] | Callable[..., _T],
 ) -> TypeGuard[Callable[..., Awaitable[_T]]]:
     return asyncio.iscoroutinefunction(func)
 
 
 async def call_func(
-    func: Union[Callable[..., Awaitable[_T]], Callable[..., _T]],
+    func: Callable[..., Awaitable[_T]] | Callable[..., _T],
     /,
     *args: Any,
     **kwargs: Any,
@@ -39,10 +37,10 @@ async def call_func(
 
 
 async def timer(
-    interval: Union[float, timedelta],
+    interval: float | timedelta,
     func: Callable[..., Any],
     *args: Any,
-    initial_interval: Union[float, timedelta, None] = None,
+    initial_interval: float | timedelta | None = None,
 ) -> NoReturn:
     if initial_interval is None:
         initial_interval = interval

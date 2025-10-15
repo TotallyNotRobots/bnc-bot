@@ -9,7 +9,7 @@ A bot to handle BNC account requests for Snoonet
 This bot may work with other systems, but this is the setup it was specifically written to work with
 
 ## Requirements
-- Python 3.9+
+- Python 3.10+
 
 ## Features
 - Assigns each user a unique bindhost in the 127.0.0.0/16 range
