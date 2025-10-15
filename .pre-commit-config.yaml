@@ -13,15 +13,15 @@ repos:
     hooks:
       - id: black
   - repo: https://github.com/pycqa/isort
-    rev: "c8ab4a5b21bac924d106e3103dd7c979fdd0f9bc"  # frozen: 6.0.1
+    rev: "0a09c783808cfe77bb3269250f663ff733d23302"  # frozen: 7.0.0
     hooks:
       - id: isort
   - repo: https://github.com/andreoliwa/nitpick
-    rev: "2bdfd4e7aa1fa2eea0d83fd0c0e0ba4fb55ba1e3"  # frozen: v0.36.0
+    rev: "a5532d554f2c9035bb05ec14ee1bf31469e0a563"  # frozen: v0.37.0
     hooks:
       - id: nitpick
   - repo: "https://github.com/TotallyNotRobots/check-spdx-header"
-    rev: '9f8768b9c1e5a35bbf5542a15ebe0af398f18888'  # frozen: 0.1.1
+    rev: '5a1159f3a4aaaaa5417667b0072348aff21f197e'  # frozen: 0.2.0
     hooks:
       - id: fix-spdx-header
   - repo: https://github.com/ikamensh/flynt
@@ -35,13 +35,13 @@ repos:
           - tomli ; python_version < '3.11'
         id: codespell
   - repo: https://github.com/asottile/pyupgrade
-    rev: '37bfa06d791fd38fb4e54910b36a2ff57641b074'  # frozen: v3.20.0
+    rev: 'f90119b1b8bd9e46949d9592972b2c4c27d62a97'  # frozen: v3.21.0
     hooks:
       - id: pyupgrade
         args:
           - --py310-plus
   - repo: https://github.com/PyCQA/autoflake
-    rev: v2.3.1
+    rev: 0544741e2b4a22b472d9d93e37d4ea9153820bb1  # frozen: v2.3.1
     hooks:
       - id: autoflake
 
