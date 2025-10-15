@@ -23,8 +23,17 @@ CMD_PARAMS: dict[str, tuple[str, ...]] = {
 def make_event(conn: "Conn", line: "Message") -> RawEvent:
     cmd = line.command
     params = line.parameters
-    assert line.prefix
-    nick = line.prefix.nick
+    if line.prefix:
+        nick = line.prefix.nick
+        user = line.prefix.user
+        host = line.prefix.host
+        mask = line.prefix.mask
+    else:
+        nick = None
+        user = None
+        host = None
+        mask = None
+
     chan: Optional[str] = None
     if cmd in CMD_PARAMS and "chan" in CMD_PARAMS[cmd]:
         chan = params[CMD_PARAMS[cmd].index("chan")]
@@ -34,9 +43,9 @@ def make_event(conn: "Conn", line: "Message") -> RawEvent:
     return RawEvent(
         conn=conn,
         nick=nick,
-        user=line.prefix.user,
-        host=line.prefix.host,
-        mask=line.prefix.mask,
+        user=user,
+        host=host,
+        mask=mask,
         chan=chan,
         irc_rawline=line,
         irc_command=cmd,

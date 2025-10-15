@@ -94,8 +94,14 @@ async def on_raw(conn: "Conn", event: "RawEvent", irc_command: str) -> None:
 
 
 @raw("JOIN")
-def on_join(conn: "Conn", chan: str, nick: str) -> None:
-    if chan == conn.log_chan and nick.lower() == conn.nick.lower():
+def on_join(conn: "Conn", chan: Optional[str], nick: Optional[str]) -> None:
+    if (
+        nick
+        and chan
+        and conn.log_chan
+        and chan.lower() == conn.log_chan.lower()
+        and nick.lower() == conn.nick.lower()
+    ):
         conn.chan_log("Bot online.")
 
 
@@ -121,10 +127,12 @@ async def on_whois_acct(conn: "Conn", irc_paramlist: list[str]) -> None:
 
 
 @raw("NOTICE")
-async def on_notice(irc_paramlist: list[str], conn: "Conn", nick: str) -> None:
+async def on_notice(
+    irc_paramlist: list[str], conn: "Conn", nick: Optional[str]
+) -> None:
     """Handle NickServ info responses"""
     message = irc_paramlist[-1]
-    if nick.lower() == "nickserv" and ":" in message:
+    if nick and nick.lower() == "nickserv" and ":" in message:
         # Registered: May 30 00:53:54 2017 UTC (5 days, 19 minutes ago)
         message = message.strip()
         part, content = message.split(":", 1)
@@ -139,13 +147,13 @@ async def on_privmsg(
     event: "RawEvent",
     irc_paramlist: list[str],
     conn: "Conn",
-    nick: str,
-    host: str,
+    nick: Optional[str],
+    host: Optional[str],
     bnc_users: BNCUsers,
     is_admin: bool,
 ) -> None:
     message = irc_paramlist[-1]
-    if nick.startswith(conn.prefix) and host == "znc.in":
+    if nick and nick.startswith(conn.prefix) and host == "znc.in":
         znc_module = nick[len(conn.prefix) :]
         if znc_module == "status" and (
             user_lsit_fut := conn.futures.get("user_list")
@@ -197,8 +205,10 @@ async def on_privmsg(
 
 
 @raw("NICK")
-async def on_nick(conn: "Conn", irc_paramlist: list[str], nick: str) -> None:
-    if nick.lower() == conn.nick.lower():
+async def on_nick(
+    conn: "Conn", irc_paramlist: list[str], nick: Optional[str]
+) -> None:
+    if nick and nick.lower() == conn.nick.lower():
         conn.nick = irc_paramlist[0]
 
 
