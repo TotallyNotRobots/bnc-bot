@@ -361,10 +361,16 @@ class Conn:
 
     @property
     def nick(self) -> str:
-        assert self._protocol
+        if self._protocol is None:
+            msg = "Can't get nickname from non-existent Protocol object"
+            raise ValueError(msg)
+
         return str(self._protocol.nick)
 
     @nick.setter
     def nick(self, value: str) -> None:
-        assert self._protocol
+        if self._protocol is None:
+            msg = "Can't set nickname on non-existent Protocol object"
+            raise ValueError(msg)
+
         self._protocol.nick = value

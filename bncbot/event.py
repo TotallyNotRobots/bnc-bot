@@ -24,10 +24,10 @@ class Event:
         *,
         conn: "Conn",
         base_event: None = None,
-        nick: str,
-        user: str,
-        host: str,
-        mask: str,
+        nick: Optional[str],
+        user: Optional[str],
+        host: Optional[str],
+        mask: Optional[str],
         chan: Optional[str] = None,
     ) -> None: ...
 
@@ -57,30 +57,14 @@ class Event:
     ) -> None:
         if base_event:
             self.conn: Conn = conn or base_event.conn
-            self.nick: str = nick or base_event.nick
-            self.user: str = user or base_event.user
-            self.host: str = host or base_event.host
-            self.mask: str = mask or base_event.mask
+            self.nick: Optional[str] = nick or base_event.nick
+            self.user: Optional[str] = user or base_event.user
+            self.host: Optional[str] = host or base_event.host
+            self.mask: Optional[str] = mask or base_event.mask
             self.chan: Optional[str] = chan or base_event.chan
         else:
             if conn is None:
                 msg = "'conn' must be set or inherited"
-                raise ValueError(msg)
-
-            if nick is None:
-                msg = "'nick' must be set or inherited"
-                raise ValueError(msg)
-
-            if user is None:
-                msg = "'user' must be set or inherited"
-                raise ValueError(msg)
-
-            if host is None:
-                msg = "'host' must be set or inherited"
-                raise ValueError(msg)
-
-            if mask is None:
-                msg = "'mask' must be set or inherited"
                 raise ValueError(msg)
 
             self.conn = conn
@@ -92,14 +76,20 @@ class Event:
 
     def message(self, message: str, target: Optional[str] = None) -> None:
         if not target:
-            assert self.chan
+            if not self.chan:
+                msg = "'target' must be set when Event.chan is None"
+                raise ValueError(msg)
+
             target = self.chan
 
         self.conn.msg(target, message)
 
     def notice(self, message: str, target: Optional[str] = None) -> None:
         if not target:
-            assert self.nick
+            if not self.nick:
+                msg = "'target' must be set when Event.nick is None"
+                raise ValueError(msg)
+
             target = self.nick
 
         self.conn.notice(target, message)
@@ -126,6 +116,9 @@ class Event:
 
     @property
     def is_admin(self) -> bool:
+        if not self.mask:
+            return False
+
         return self.conn.is_admin(self.mask)
 
 
@@ -136,10 +129,10 @@ class RawEvent(Event):
         *,
         conn: "Conn",
         base_event: None = None,
-        nick: str,
-        user: str,
-        host: str,
-        mask: str,
+        nick: Optional[str],
+        user: Optional[str],
+        host: Optional[str],
+        mask: Optional[str],
         chan: Optional[str] = None,
         irc_rawline: "Message",
         irc_command: str,
@@ -189,22 +182,6 @@ class RawEvent(Event):
         else:
             if conn is None:
                 msg = "'conn' must be set or inherited"
-                raise ValueError(msg)
-
-            if nick is None:
-                msg = "'nick' must be set or inherited"
-                raise ValueError(msg)
-
-            if user is None:
-                msg = "'user' must be set or inherited"
-                raise ValueError(msg)
-
-            if host is None:
-                msg = "'host' must be set or inherited"
-                raise ValueError(msg)
-
-            if mask is None:
-                msg = "'mask' must be set or inherited"
                 raise ValueError(msg)
 
             super().__init__(
