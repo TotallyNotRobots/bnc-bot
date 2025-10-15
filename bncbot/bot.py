@@ -6,18 +6,10 @@
 import asyncio
 import re
 from collections import defaultdict
-from collections.abc import Sequence
+from collections.abc import Callable, Sequence
 from functools import partial
 from itertools import chain
-from typing import (
-    TYPE_CHECKING,
-    Any,
-    Callable,
-    NamedTuple,
-    Optional,
-    TypedDict,
-    TypeVar,
-)
+from typing import TYPE_CHECKING, Any, NamedTuple, TypedDict, TypeVar
 
 from bncbot import util
 from bncbot.config import BNCQueue, BNCUsers
@@ -37,7 +29,7 @@ class Command(NamedTuple):
     func: Callable[..., Any]
     admin: bool = False
     param: bool = True
-    doc: Optional[str] = None
+    doc: str | None = None
 
 
 class Handlers(TypedDict):
@@ -94,7 +86,7 @@ async def on_raw(conn: "Conn", event: "RawEvent", irc_command: str) -> None:
 
 
 @raw("JOIN")
-def on_join(conn: "Conn", chan: Optional[str], nick: Optional[str]) -> None:
+def on_join(conn: "Conn", chan: str | None, nick: str | None) -> None:
     if (
         nick
         and chan
@@ -128,7 +120,7 @@ async def on_whois_acct(conn: "Conn", irc_paramlist: list[str]) -> None:
 
 @raw("NOTICE")
 async def on_notice(
-    irc_paramlist: list[str], conn: "Conn", nick: Optional[str]
+    irc_paramlist: list[str], conn: "Conn", nick: str | None
 ) -> None:
     """Handle NickServ info responses"""
     message = irc_paramlist[-1]
@@ -147,8 +139,8 @@ async def on_privmsg(
     event: "RawEvent",
     irc_paramlist: list[str],
     conn: "Conn",
-    nick: Optional[str],
-    host: Optional[str],
+    nick: str | None,
+    host: str | None,
     bnc_users: BNCUsers,
     is_admin: bool,
 ) -> None:
@@ -189,7 +181,7 @@ async def on_privmsg(
     elif message[0] in conn.cmd_prefix:
         cmd, _, text = message[1:].partition(" ")
         text = text.strip()
-        handler: Optional[Command] = conn.handlers.get("command", {}).get(cmd)
+        handler: Command | None = conn.handlers.get("command", {}).get(cmd)
         if not handler or (handler.admin and not is_admin):
             return
 
@@ -206,7 +198,7 @@ async def on_privmsg(
 
 @raw("NICK")
 async def on_nick(
-    conn: "Conn", irc_paramlist: list[str], nick: Optional[str]
+    conn: "Conn", irc_paramlist: list[str], nick: str | None
 ) -> None:
     if nick and nick.lower() == conn.nick.lower():
         conn.nick = irc_paramlist[0]

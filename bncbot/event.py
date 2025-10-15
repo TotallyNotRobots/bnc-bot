@@ -24,11 +24,11 @@ class Event:
         *,
         conn: "Conn",
         base_event: None = None,
-        nick: Optional[str],
-        user: Optional[str],
-        host: Optional[str],
-        mask: Optional[str],
-        chan: Optional[str] = None,
+        nick: str | None,
+        user: str | None,
+        host: str | None,
+        mask: str | None,
+        chan: str | None = None,
     ) -> None: ...
 
     @overload
@@ -37,11 +37,11 @@ class Event:
         *,
         conn: Optional["Conn"] = None,
         base_event: "Event",
-        nick: Optional[str] = None,
-        user: Optional[str] = None,
-        host: Optional[str] = None,
-        mask: Optional[str] = None,
-        chan: Optional[str] = None,
+        nick: str | None = None,
+        user: str | None = None,
+        host: str | None = None,
+        mask: str | None = None,
+        chan: str | None = None,
     ) -> None: ...
 
     def __init__(
@@ -49,19 +49,19 @@ class Event:
         *,
         conn: Optional["Conn"] = None,
         base_event: Optional["Event"] = None,
-        nick: Optional[str] = None,
-        user: Optional[str] = None,
-        host: Optional[str] = None,
-        mask: Optional[str] = None,
-        chan: Optional[str] = None,
+        nick: str | None = None,
+        user: str | None = None,
+        host: str | None = None,
+        mask: str | None = None,
+        chan: str | None = None,
     ) -> None:
         if base_event:
             self.conn: Conn = conn or base_event.conn
-            self.nick: Optional[str] = nick or base_event.nick
-            self.user: Optional[str] = user or base_event.user
-            self.host: Optional[str] = host or base_event.host
-            self.mask: Optional[str] = mask or base_event.mask
-            self.chan: Optional[str] = chan or base_event.chan
+            self.nick: str | None = nick or base_event.nick
+            self.user: str | None = user or base_event.user
+            self.host: str | None = host or base_event.host
+            self.mask: str | None = mask or base_event.mask
+            self.chan: str | None = chan or base_event.chan
         else:
             if conn is None:
                 msg = "'conn' must be set or inherited"
@@ -74,7 +74,7 @@ class Event:
             self.mask = mask
             self.chan = chan
 
-    def message(self, message: str, target: Optional[str] = None) -> None:
+    def message(self, message: str, target: str | None = None) -> None:
         if not target:
             if not self.chan:
                 msg = "'target' must be set when Event.chan is None"
@@ -84,7 +84,7 @@ class Event:
 
         self.conn.msg(target, message)
 
-    def notice(self, message: str, target: Optional[str] = None) -> None:
+    def notice(self, message: str, target: str | None = None) -> None:
         if not target:
             if not self.nick:
                 msg = "'target' must be set when Event.nick is None"
@@ -129,11 +129,11 @@ class RawEvent(Event):
         *,
         conn: "Conn",
         base_event: None = None,
-        nick: Optional[str],
-        user: Optional[str],
-        host: Optional[str],
-        mask: Optional[str],
-        chan: Optional[str] = None,
+        nick: str | None,
+        user: str | None,
+        host: str | None,
+        mask: str | None,
+        chan: str | None = None,
         irc_rawline: "Message",
         irc_command: str,
         irc_paramlist: "ParamList",
@@ -145,13 +145,13 @@ class RawEvent(Event):
         *,
         conn: Optional["Conn"] = None,
         base_event: "Event",
-        nick: Optional[str] = None,
-        user: Optional[str] = None,
-        host: Optional[str] = None,
-        mask: Optional[str] = None,
-        chan: Optional[str] = None,
+        nick: str | None = None,
+        user: str | None = None,
+        host: str | None = None,
+        mask: str | None = None,
+        chan: str | None = None,
         irc_rawline: Optional["Message"] = None,
-        irc_command: Optional[str] = None,
+        irc_command: str | None = None,
         irc_paramlist: Optional["ParamList"] = None,
     ) -> None: ...
 
@@ -159,14 +159,14 @@ class RawEvent(Event):
         self,
         *,
         conn: Optional["Conn"] = None,
-        base_event: Optional[Event] = None,
-        nick: Optional[str] = None,
-        user: Optional[str] = None,
-        host: Optional[str] = None,
-        mask: Optional[str] = None,
-        chan: Optional[str] = None,
+        base_event: Event | None = None,
+        nick: str | None = None,
+        user: str | None = None,
+        host: str | None = None,
+        mask: str | None = None,
+        chan: str | None = None,
         irc_rawline: Optional["Message"] = None,
-        irc_command: Optional[str] = None,
+        irc_command: str | None = None,
         irc_paramlist: Optional["ParamList"] = None,
     ) -> None:
         if base_event is not None:
@@ -199,13 +199,13 @@ class CommandEvent(Event):
         *,
         conn: Optional["Conn"] = None,
         base_event: Event,
-        nick: Optional[str] = None,
-        user: Optional[str] = None,
-        host: Optional[str] = None,
-        mask: Optional[str] = None,
-        chan: Optional[str] = None,
+        nick: str | None = None,
+        user: str | None = None,
+        host: str | None = None,
+        mask: str | None = None,
+        chan: str | None = None,
         command: str,
-        text: Optional[str] = None,
+        text: str | None = None,
         cmd_handler: "Command",
     ) -> None:
         super().__init__(

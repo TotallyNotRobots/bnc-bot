@@ -9,7 +9,6 @@ import signal
 import sys
 import time
 from types import FrameType
-from typing import Optional
 
 import aiofiles
 
@@ -25,7 +24,7 @@ async def async_main() -> bool:
 
     original_sigint = signal.getsignal(signal.SIGINT)
 
-    def handle_sig(sig: int, frame: Optional[FrameType]) -> None:
+    def handle_sig(sig: int, frame: FrameType | None) -> None:
         if sig == signal.SIGINT:
             if conn:
                 asyncio.run_coroutine_threadsafe(conn.shutdown(), conn.loop)

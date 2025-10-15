@@ -4,7 +4,6 @@
 # SPDX-License-Identifier: MIT
 
 from pathlib import Path
-from typing import Optional
 
 from pydantic import BaseModel, Field
 from typing_extensions import Self
@@ -40,7 +39,7 @@ class BotConfig(FileBasedDataModel):
     log_to_file: bool = False
 
 
-BNCUsers = dict[str, Optional[str]]
+BNCUsers = dict[str, str | None]
 BNCQueue = dict[str, str]
 
 

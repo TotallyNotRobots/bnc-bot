@@ -3,7 +3,7 @@
 #
 # SPDX-License-Identifier: MIT
 
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 from bncbot.event import RawEvent
 
@@ -34,7 +34,7 @@ def make_event(conn: "Conn", line: "Message") -> RawEvent:
         host = None
         mask = None
 
-    chan: Optional[str] = None
+    chan: str | None = None
     if cmd in CMD_PARAMS and "chan" in CMD_PARAMS[cmd]:
         chan = params[CMD_PARAMS[cmd].index("chan")]
         if chan.lower() == conn.nick.lower():
