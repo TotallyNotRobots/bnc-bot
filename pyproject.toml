@@ -23,7 +23,7 @@ classifiers = [
 dependencies = [
     "async-irc == 0.2.0",
     "typing_extensions == 4.15.0",
-    "pydantic ==2.12.2",
+    "pydantic ==2.12.3",
     "aiofiles ==25.1.0",
 ]
 
