@@ -5,7 +5,7 @@
 # - pytest==8.4.2
 # - aiofiles==25.1.0
 # - async-irc==0.2.0
-# - pydantic==2.12.2
+# - pydantic==2.12.3
 # - typing-extensions==4.15.0
 #
 
@@ -69,9 +69,9 @@ py-irclib==0.7.0 \
     --hash=sha256:aaac7b79bb0524bd75860a77f2bcaab187ce5df282f7e3d2910b056999a6b447 \
     --hash=sha256:f8d0fe2e1b1b4ad94d3dd5a0f5c14ac8d8d346334a6059d3cfb2a63e2b8d15ed
     # via async-irc
-pydantic==2.12.2 \
-    --hash=sha256:25ff718ee909acd82f1ff9b1a4acfd781bb23ab3739adaa7144f19a6a4e231ae \
-    --hash=sha256:7b8fa15b831a4bbde9d5b84028641ac3080a4ca2cbd4a621a661687e741624fd
+pydantic==2.12.3 \
+    --hash=sha256:1da1c82b0fc140bb0103bc1441ffe062154c8d38491189751ee00fd8ca65ce74 \
+    --hash=sha256:6986454a854bc3bc6e5443e1369e06a3a456af9d339eda45510f517d9ea5c6bf
     # via hatch.envs.default
 pydantic-core==2.41.4 \
     --hash=sha256:025ba34a4cf4fb32f917d5d188ab5e702223d3ba603be4d8aca2f82bede432a4 \
