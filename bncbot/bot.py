@@ -131,7 +131,10 @@ async def on_notice(
         message = message.strip()
         part, content = message.split(":", 1)
         content = content.strip()
-        if part == "Registered" and "ns_info" in conn.futures:
+        if (
+            part in ("Registered", "Account registered")
+            and "ns_info" in conn.futures
+        ):
             conn.logger.debug("Got registered time for nickserv info")
             conn.futures["ns_info"].set_result(content)
             del conn.futures["ns_info"]
