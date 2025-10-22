@@ -37,6 +37,7 @@ class BotConfig(FileBasedDataModel):
 
     debug: bool = False
     log_to_file: bool = False
+    nickserv_timeout: int | float = 30
 
 
 BNCUsers = dict[str, str | None]

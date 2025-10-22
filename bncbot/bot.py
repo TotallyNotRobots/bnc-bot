@@ -131,7 +131,10 @@ async def on_notice(
         message = message.strip()
         part, content = message.split(":", 1)
         content = content.strip()
-        if part == "Registered" and "ns_info" in conn.futures:
+        if (
+            part in ("Registered", "Account registered")
+            and "ns_info" in conn.futures
+        ):
             conn.logger.debug("Got registered time for nickserv info")
             conn.futures["ns_info"].set_result(content)
             del conn.futures["ns_info"]
@@ -391,7 +394,16 @@ async def cmd_requestbnc(
         ns_info_fut: asyncio.Future[str] = asyncio.Future()
         conn.futures["ns_info"] = ns_info_fut
         event.message(f"INFO {acct}", "NickServ")
-        registered_time = await ns_info_fut
+        try:
+            registered_time = await asyncio.wait_for(
+                ns_info_fut, conn.config.nickserv_timeout
+            )
+        except (asyncio.CancelledError, asyncio.TimeoutError):
+            conn.chan_log(f"Timeout while retrieving NickServ info for {nick}")
+            conn.logger.warning(
+                "Timeout while retrieving NickServ info for %s", nick
+            )
+            return
 
     conn.add_queue(acct, registered_time)
     event.message("BNC request submitted.", nick)
