@@ -102,6 +102,7 @@ async def on_whois_end(conn: "Conn", irc_paramlist: list[str]) -> None:
     to_remove = []
     for name, fut in conn.futures.items():
         if name.startswith("whois") and name.endswith(irc_paramlist[1]):
+            conn.logger.debug("Cancelling future: %s", name)
             fut.set_result("")
             to_remove.append(name)
 
@@ -125,11 +126,13 @@ async def on_notice(
     """Handle NickServ info responses"""
     message = irc_paramlist[-1]
     if nick and nick.lower() == "nickserv" and ":" in message:
+        conn.logger.debug("Got nickserv message: %s", message)
         # Registered: May 30 00:53:54 2017 UTC (5 days, 19 minutes ago)
         message = message.strip()
         part, content = message.split(":", 1)
         content = content.strip()
         if part == "Registered" and "ns_info" in conn.futures:
+            conn.logger.debug("Got registered time for nickserv info")
             conn.futures["ns_info"].set_result(content)
             del conn.futures["ns_info"]
 
@@ -363,6 +366,8 @@ async def cmd_requestbnc(
         )
         return
 
+    conn.logger.info("Got account %s for nick %s", acct, nick)
+
     username = acct
     username = sanitize_username(username)
 
@@ -380,7 +385,9 @@ async def cmd_requestbnc(
         )
         return
 
+    conn.logger.debug("Starting to get NickServ info for %s", nick)
     async with conn.locks["ns_info"]:
+        conn.logger.debug("NickServ info lock acquired")
         ns_info_fut: asyncio.Future[str] = asyncio.Future()
         conn.futures["ns_info"] = ns_info_fut
         event.message(f"INFO {acct}", "NickServ")
