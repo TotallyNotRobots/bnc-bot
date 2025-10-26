@@ -1,4 +1,4 @@
-name: test
+name: Python tests
 
 on:
   push:
@@ -11,13 +11,13 @@ env:
   FORCE_COLOR: "1"
   HATCH_VERSION: "1.15.1"
 
-permissions:
-  contents: read
-
 jobs:
-  run:
+  test:
     name: Python ${{ matrix.python-version }} on ${{ startsWith(matrix.os, 'macos-') && 'macOS' || startsWith(matrix.os, 'windows-') && 'Windows' || 'Linux' }}
     runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read
+      id-token: write
     strategy:
       fail-fast: false
       matrix:
@@ -38,11 +38,11 @@ jobs:
       with:
         version: "${{ env.HATCH_VERSION }}"
 
-    - name: Run static analysis
-      run: hatch fmt --check
-
     - name: Run type check
       run: hatch run types:check
+
+    - name: Run formatter
+      run: hatch fmt --check
 
     - name: Run pre-commit
       run: hatch run pre-commit:run
@@ -51,3 +51,9 @@ jobs:
 
     - name: Run tests
       run: hatch test --python ${{ matrix.python-version }} --cover --randomize --parallel --retries 2 --retry-delay 1
+
+    - uses: codecov/codecov-action@5a1091511ad55cbe89839c7260b706298ca349f7 # v5.5.1
+      with:
+        name: "build-${{ matrix.python-version }}"
+        fail_ci_if_error: true
+        use_oidc: true
