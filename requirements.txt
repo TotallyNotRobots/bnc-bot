@@ -65,9 +65,9 @@ pre-commit==4.3.0 \
     --hash=sha256:2b0747ad7e6e967169136edffee14c16e148a778a54e4f967921aa1ebf2308d8 \
     --hash=sha256:499fe450cc9d42e9d58e606262795ecb64dd05438943c62b66f6a8673da30b16
     # via hatch.envs.default
-py-irclib==0.7.0 \
-    --hash=sha256:aaac7b79bb0524bd75860a77f2bcaab187ce5df282f7e3d2910b056999a6b447 \
-    --hash=sha256:f8d0fe2e1b1b4ad94d3dd5a0f5c14ac8d8d346334a6059d3cfb2a63e2b8d15ed
+py-irclib==0.8.1 \
+    --hash=sha256:839f1f984f088552b3eb922e716eb9f48dccb7b48244e94f594c34be28bed101 \
+    --hash=sha256:9cf886d44a904acc28d5f6e2d0c854596b382a9340fbd58d66f9cde27ed44d30
     # via async-irc
 pydantic==2.12.3 \
     --hash=sha256:1da1c82b0fc140bb0103bc1441ffe062154c8d38491189751ee00fd8ca65ce74 \
