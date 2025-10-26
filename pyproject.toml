@@ -56,10 +56,11 @@ pip-compile-hashes = true
 pip-compile-resolver = "uv"
 pip-compile-installer = "uv"
 post-install-commands = [
-    "hatch run pre-commit install -f"
+    "hatch run pre-commit:install"
 ]
 
 [tool.hatch.envs.hatch-test]
+post-install-commands = []
 extra-dependencies = ["pytest-asyncio"]
 type = "pip-compile"
 pip-compile-constraint = "default"
@@ -80,6 +81,7 @@ pip-compile-hashes = true
 pip-compile-resolver = "uv"
 pip-compile-installer = "uv"
 pip-compile-constraint = "default"
+post-install-commands = []
 
 [tool.hatch.envs.hatch-build]
 type = "pip-compile"
@@ -87,9 +89,19 @@ pip-compile-hashes = true
 pip-compile-resolver = "uv"
 pip-compile-installer = "uv"
 pip-compile-constraint = "default"
+post-install-commands = []
 
 [[tool.hatch.envs.hatch-test.matrix]]
 python = ["3.13", "3.12", "3.11", "3.10"]
+
+[tool.hatch.envs.pre-commit]
+extra-dependencies = [
+    "pre-commit==4.3.0",
+]
+post-install-commands = []
+[tool.hatch.envs.pre-commit.scripts]
+run = "pre-commit run {args:--all}"
+install = "pre-commit install -f"
 
 [tool.hatch.envs.types]
 template = "hatch-test"
@@ -97,6 +109,7 @@ extra-dependencies = [
     "mypy == 1.18.2",
     "types-aiofiles ==25.1.0.20251011",
 ]
+post-install-commands = []
 [tool.hatch.envs.types.scripts]
 check = "mypy {args:bncbot tests}"
 
