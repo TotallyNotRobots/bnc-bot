@@ -52,6 +52,8 @@ type = "pip-compile"
 dependencies = [
     "pre-commit==4.3.0",
     "pytest==8.4.2",
+    "hatch-pip-compile==1.11.5",
+    "pip==25.2",
 ]
 pip-compile-hashes = true
 pip-compile-resolver = "uv"
