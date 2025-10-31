@@ -2,8 +2,11 @@ name: Update lockfiles
 
 on:
   schedule:
-  - cron: '0 3 * * *'   # Every Monday at 03:00 UTC
+    - cron: '0 3 * * *' # Every Monday at 03:00 UTC
   workflow_dispatch:
+
+env:
+  HATCH_VERSION: "1.15.1"
 
 jobs:
   update-pre-commit-config:
@@ -13,35 +16,32 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8   # v5
+      - name: Checkout repository
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
 
-    - name: Set up Python
-      uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c   # v6
-      with:
-        python-version: '3.14'
-        cache: 'pip'
+      - name: Set up Python
+        uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6
+        with:
+          python-version: '3.14'
+          cache: 'pip'
 
-    - name: Install hatch
-      run: pip install --upgrade hatch hatch-pip-compile
+      - name: Install Hatch
+        uses: pypa/hatch@install
+        with:
+          version: "${{ env.HATCH_VERSION }}"
 
-    - name: Set up Git user
-      run: |
-        git config --global user.name "$GITHUB_ACTOR"
-        git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com"
+      - name: Update lockfiles
+        run: hatch run hatch-pip-compile --upgrade --all
 
-    - name: Update lockfiles
-      run: hatch-pip-compile --upgrade --all
-
-    - name: Create Pull Request
-      uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e   # v7.0.8
-      with:
-        commit-message: "chore(deps): Update lockfiles"
-        title: "chore(deps): Update lockfiles"
-        body: "Automated update of lockfiles via scheduled workflow."
-        branch: "update/lockfiles"
-        base: ${{ github.ref_name }}
-        labels: "update"
-        reviewers: "linuxdaemon"
-        assignees: "linuxdaemon"
-        sign-commits: true
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e # v7.0.8
+        with:
+          commit-message: "chore(deps): Update lockfiles"
+          title: "chore(deps): Update lockfiles"
+          body: "Automated update of lockfiles via scheduled workflow."
+          branch: "update/lockfiles"
+          base: ${{ github.ref_name }}
+          labels: "update"
+          reviewers: "linuxdaemon"
+          assignees: "linuxdaemon"
+          sign-commits: true
