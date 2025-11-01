@@ -61,7 +61,13 @@ repos:
         types:
           - python
         pass_filenames: true
-minimum_pre_commit_version: 2.18.0
+  - repo: https://github.com/MarcoGorelli/auto-walrus
+    rev: 'ba0661836089a532a710f68713a3e3e53f7f0113'  # frozen: 0.3.4
+    hooks:
+      - id: auto-walrus
+        additional_dependencies:
+          - tomli ; python_version < '3.11'
+minimum_pre_commit_version: 4.3.0
 default_install_hook_types:
   - pre-commit
   - pre-push
