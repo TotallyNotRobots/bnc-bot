@@ -120,6 +120,7 @@ check = "mypy {args:bncbot tests}"
 source_pkgs = ["bncbot", "tests"]
 branch = true
 omit = ["bncbot/_version.py"]
+relative_files = true
 
 [tool.coverage.paths]
 bncbot = ["bncbot", "*/bnc-bot/bncbot"]
@@ -161,6 +162,8 @@ strict = true
 disallow_untyped_calls = true
 disallow_untyped_defs = true
 allow_redefinition = false
+warn_unused_configs = true
+enable_error_code = ["deprecated"]
 
 [tool.flynt]
 transform-concats = true
@@ -255,3 +258,5 @@ in-place = true
 [tool.pytest.ini_options]
 filterwarnings = ["error"]
 asyncio_mode = "auto"
+minversion = "8.0"
+addopts = ["--doctest-modules"]
