@@ -4,7 +4,7 @@
 # - pre-commit==4.3.0
 # - pytest==8.4.2
 # - hatch-pip-compile==1.11.5
-# - pip==25.2
+# - pip==25.3
 # - pre-commit==4.3.0
 # - aiofiles==25.1.0
 # - async-irc==0.2.0
@@ -303,7 +303,7 @@ pexpect==4.9.0 \
     --hash=sha256:7236d1e080e4936be2dc3e326cec0af72acf9212a7e1d060210e70a47e253523 \
     --hash=sha256:ee7d41123f3c9911050ea2c2dac107568dc43b2d3b0c7557a33212c398ead30f
     # via hatch
-pip==25.2 \
+pip==25.3 \
     --hash=sha256:578283f006390f85bb6282dffb876454593d637f5d1be494b5202ce4877e71f2 \
     --hash=sha256:6d67a2b4e7f14d8b31b8b52648866fa717f45a1eb70e83002f4331d07e953717
     # via
