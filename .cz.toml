@@ -1,0 +1,7 @@
+[tool.commitizen]
+name = "cz_conventional_commits"
+version_provider = "scm"
+update_changelog_on_bump = true
+major_version_zero = true
+version_scheme = "semver2"
+annotated_tag = true

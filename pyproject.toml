@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
 keywords = []
-authors = [{ name = "linuxdaemon", email = "linuxdaemon.irc@gmail.com" }]
+authors = [{name = "linuxdaemon", email = "linuxdaemon.irc@gmail.com"}]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Programming Language :: Python",
@@ -44,7 +44,7 @@ version-file = "bncbot/_version.py"
 
 [tool.hatch.env]
 requires = [
-    "hatch-pip-compile"
+    "hatch-pip-compile",
 ]
 
 [tool.hatch.envs.default]
@@ -59,7 +59,7 @@ pip-compile-hashes = true
 pip-compile-resolver = "uv"
 pip-compile-installer = "uv"
 post-install-commands = [
-    "hatch run pre-commit:install"
+    "hatch run pre-commit:install",
 ]
 
 [tool.hatch.envs.hatch-test]
@@ -72,11 +72,15 @@ pip-compile-resolver = "uv"
 pip-compile-installer = "uv"
 default-args = ["tests", "bncbot"]
 extra-args = ["-vv", "--doctest-modules"]
+
 [tool.hatch.envs.hatch-test.scripts]
 run = "pytest{env:HATCH_TEST_ARGS:} {args}"
 run-cov = "coverage run -m pytest{env:HATCH_TEST_ARGS:} {args}"
 cov-combine = "coverage combine"
 cov-report = ["coverage report --show-missing --skip-covered", "coverage xml"]
+
+[[tool.hatch.envs.hatch-test.matrix]]
+python = ["3.14", "3.13", "3.12", "3.11", "3.10"]
 
 [tool.hatch.envs.hatch-static-analysis]
 type = "pip-compile"
@@ -94,14 +98,12 @@ pip-compile-installer = "uv"
 pip-compile-constraint = "default"
 post-install-commands = []
 
-[[tool.hatch.envs.hatch-test.matrix]]
-python = ["3.14", "3.13", "3.12", "3.11", "3.10"]
-
 [tool.hatch.envs.pre-commit]
 extra-dependencies = [
     "pre-commit==4.3.0",
 ]
 post-install-commands = []
+
 [tool.hatch.envs.pre-commit.scripts]
 run = "pre-commit run {args:--all}"
 install = "pre-commit install -f"
@@ -113,6 +115,7 @@ extra-dependencies = [
     "types-aiofiles ==25.1.0.20251011",
 ]
 post-install-commands = []
+
 [tool.hatch.envs.types.scripts]
 check = "mypy {args:bncbot tests}"
 
@@ -171,14 +174,6 @@ transform-joins = true
 line-length = 120
 aggressive = true
 
-[tool.commitizen]
-name = "cz_conventional_commits"
-version_provider = "scm"
-update_changelog_on_bump = true
-major_version_zero = true
-version_scheme = "semver2"
-annotated_tag = true
-
 [tool.check-spdx-header]
 headers = [
     "2019 Snoonet",
@@ -235,7 +230,6 @@ extend-ignore = [
     "PYI018",
     "PT006",
 ]
-# select = ["ALL"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/*.py" = [
