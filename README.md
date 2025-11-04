@@ -21,6 +21,16 @@ This bot may work with other systems, but this is the setup it was specifically 
 2. `pip install .`
 3. Copy `config.default.json` to `config.json` and modify the values as needed
 4. Run `bnc-bot` to start the bot
+  _note: check `bnc-bot --help` for command line options_
+
+### Docker
+An official docker image is published at `ghcr.io/totallynotrobots/bnc-bot` for this app.
+
+To use it you can:
+1. Create a `config.json` following the format mentioned above
+2. Run the container with `docker run -v /path/to/config.json:/config/config.json ghcr.io/totallynotrobots/bnc-bot:latest`
+
+An optional `/data` volume exists as well which is where logs and runtime state are stored. This can be attached to a host directory with `-v /path/to/data:/data`.
 
 ## Commands
 ### User Commands

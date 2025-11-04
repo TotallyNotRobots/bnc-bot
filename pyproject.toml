@@ -22,10 +22,11 @@ classifiers = [
     "Programming Language :: Python :: Implementation :: CPython",
 ]
 dependencies = [
-    "async-irc == 0.2.0",
-    "typing_extensions == 4.15.0",
-    "pydantic ==2.12.3",
-    "aiofiles ==25.1.0",
+    "async-irc==0.2.0",
+    "typing_extensions==4.15.0",
+    "pydantic==2.12.3",
+    "aiofiles==25.1.0",
+    "typer==0.20.0",
 ]
 
 [project.urls]
@@ -34,10 +35,16 @@ Issues = "https://github.com/TotallyNotRobots/bnc-bot/issues"
 Source = "https://github.com/TotallyNotRobots/bnc-bot"
 
 [project.scripts]
-bnc-bot = "bncbot.main:main"
+bnc-bot = "bncbot.cli:app"
 
 [tool.hatch.version]
 source = "vcs"
+
+[tool.hatch.build.targets.sdist]
+packages = ["bncbot"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["bncbot"]
 
 [tool.hatch.build.hooks.vcs]
 version-file = "bncbot/_version.py"
@@ -111,8 +118,8 @@ install = "pre-commit install -f"
 [tool.hatch.envs.types]
 template = "hatch-test"
 extra-dependencies = [
-    "mypy == 1.18.2",
-    "types-aiofiles ==25.1.0.20251011",
+    "mypy==1.18.2",
+    "types-aiofiles==25.1.0.20251011",
 ]
 post-install-commands = []
 
@@ -166,7 +173,18 @@ disallow_untyped_calls = true
 disallow_untyped_defs = true
 allow_redefinition = false
 warn_unused_configs = true
-enable_error_code = ["deprecated"]
+enable_error_code = [
+    "explicit-override",
+    "redundant-self",
+    "redundant-expr",
+    "possibly-undefined",
+    "truthy-bool",
+    "truthy-iterable",
+    "ignore-without-code",
+    "unused-awaitable",
+    "mutable-override",
+    "deprecated",
+]
 
 [tool.flynt]
 transform-concats = true
