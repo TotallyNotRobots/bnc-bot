@@ -3,7 +3,7 @@
 #
 # SPDX-License-Identifier: MIT
 
-from bncbot.main import main
+from bncbot.cli import app
 
 if __name__ == "__main__":
-    main()
+    app()

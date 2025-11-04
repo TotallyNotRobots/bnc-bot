@@ -31,8 +31,11 @@ if TYPE_CHECKING:
 
 
 class Conn:
-    def __init__(self, handlers: Handlers) -> None:
-        self.run_dir = Path().resolve()
+    def __init__(
+        self, handlers: Handlers, *, data_path: Path, config: Path
+    ) -> None:
+        self.config_file = config
+        self.run_dir = data_path
         self._protocol: IrcProtocol | None = None
         self.handlers = handlers
         self.futures: dict[str, asyncio.Future[Any]] = {}
@@ -144,7 +147,7 @@ class Conn:
         *args: Any,
         initial_interval: float | timedelta | None = None,
     ) -> None:
-        asyncio.ensure_future(
+        asyncio.run_coroutine_threadsafe(
             timer(interval, func, *args, initial_interval=initial_interval),
             loop=asyncio.get_running_loop(),
         )
@@ -360,10 +363,6 @@ class Conn:
     @property
     def data_file(self) -> Path:
         return self.run_dir / "bnc.json"
-
-    @property
-    def config_file(self) -> Path:
-        return self.run_dir / "config.json"
 
     @property
     def nick(self) -> str:
