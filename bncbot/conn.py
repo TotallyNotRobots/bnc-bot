@@ -8,6 +8,7 @@ import inspect
 import ipaddress
 import logging
 import logging.config
+import signal
 from collections import defaultdict
 from collections.abc import Callable
 from datetime import timedelta
@@ -38,7 +39,7 @@ class Conn:
         self.locks: dict[str, asyncio.Lock] = defaultdict(asyncio.Lock)
         self.loop = asyncio.get_running_loop()
         self.bnc_data = BNCData.load_config(self.data_file)
-        self.stopped_future: asyncio.Future[bool] = asyncio.Future()
+        self.stopped_future = asyncio.Future[None]()
         self.get_users_state: int = 0
         self.config = BotConfig.load_config(self.config_file)
         if not self.log_dir.exists():
@@ -52,11 +53,11 @@ class Conn:
         log_to_file: bool = self.config.log_to_file
         formatters = {
             "brief": {
-                "format": "[%(asctime)s] [%(levelname)s] %(message)s",
+                "format": "[%(asctime)s] [%(name)s/%(threadName)s/%(taskName)s] [%(levelname)s] %(message)s",
                 "datefmt": "%H:%M:%S",
             },
             "full": {
-                "format": "[%(asctime)s] [%(levelname)s] %(message)s",
+                "format": "[%(asctime)s] [%(name)s/%(threadName)s/%(taskName)s] [%(levelname)s] %(message)s",
                 "datefmt": "%Y-%m-%d][%H:%M:%S",
             },
         }
@@ -123,12 +124,18 @@ class Conn:
     def save_data(self) -> None:
         self.bnc_data.save_config(self.data_file)
 
-    async def run(self) -> bool:
-        await self.connect()
-        self.load_data(True)
-        self.start_timers()
-        restart = await self.stopped_future
-        return restart
+    async def run(self) -> None:
+        def _handle_interrupt() -> None:
+            asyncio.run_coroutine_threadsafe(self.shutdown(), self.loop)
+
+        self.loop.add_signal_handler(signal.SIGINT, _handle_interrupt)
+        try:
+            await self.connect()
+            self.load_data(True)
+            self.start_timers()
+            await self.stopped_future
+        finally:
+            self.loop.remove_signal_handler(signal.SIGINT)
 
     def create_timer(
         self,
@@ -209,15 +216,13 @@ class Conn:
     def close(self) -> None:
         if self._protocol:
             self._protocol.quit()
+            self._protocol.close()
 
-    async def shutdown(self, restart: bool = False) -> None:
-        self.chan_log(
-            f"Bot {'shutting down' if not restart else 'restarting'}..."
-        )
-        await asyncio.sleep(1)
+    async def shutdown(self) -> None:
+        self.chan_log("Bot shutting down...")
         self.close()
-        await asyncio.sleep(1)
-        self.stopped_future.set_result(restart)
+        await asyncio.sleep(0)
+        self.stopped_future.set_result(None)
 
     async def handle_line(self, proto: "IrcProtocol", line: "Message") -> None:
         raw_event = irc.make_event(self, line)
