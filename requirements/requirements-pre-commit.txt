@@ -7,7 +7,7 @@
 # - pip==25.2
 # - pre-commit==4.3.0
 # - aiofiles==25.1.0
-# - async-irc==0.2.0
+# - async-irc==0.3.0
 # - pydantic==2.12.4
 # - typer==0.20.0
 # - typing-extensions==4.15.0
@@ -25,9 +25,9 @@ anyio==4.11.0 \
     --hash=sha256:0287e96f4d26d4149305414d4e3bc32f0dcd0862365a4bddea19d7a1ec38c4fc \
     --hash=sha256:82a8d0b81e318cc5ce71a5f1f8b5c4e63619620b63141ef8c995fa0db95a57c4
     # via httpx
-async-irc==0.2.0 \
-    --hash=sha256:58d630b36c50d437b23206d3df92d13dd453f99192880a28255c3a8f4d60dfde \
-    --hash=sha256:65cfdba915a2dbb471ed26bd34de965070fbe85ddca6a3bd72d8b14e4006068f
+async-irc==0.3.0 \
+    --hash=sha256:7dac1e069659cd61000c460998c43c3af68407d8700fa1bf6a04b449d2f2743d \
+    --hash=sha256:ed161a76f70222dd992a30879d57fdcf773e3a9a151f6bf1981257bcb0f73341
     # via hatch.envs.pre-commit
 attrs==25.4.0 \
     --hash=sha256:16d5969b87f0859ef33a48b35d55ac1be6e42ae49d5e853b597db70c35c57e11 \
