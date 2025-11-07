@@ -22,7 +22,7 @@ classifiers = [
     "Programming Language :: Python :: Implementation :: CPython",
 ]
 dependencies = [
-    "async-irc==0.2.0",
+    "async-irc==0.3.0",
     "typing_extensions==4.15.0",
     "pydantic==2.12.4",
     "aiofiles==25.1.0",
