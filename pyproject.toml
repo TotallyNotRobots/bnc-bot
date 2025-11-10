@@ -57,7 +57,7 @@ requires = [
 [tool.hatch.envs.default]
 type = "pip-compile"
 dependencies = [
-    "pre-commit==4.3.0",
+    "pre-commit==4.4.0",
     "pytest==8.4.2",
     "hatch-pip-compile==1.11.5",
     "pip==25.2",
@@ -107,7 +107,7 @@ post-install-commands = []
 
 [tool.hatch.envs.pre-commit]
 extra-dependencies = [
-    "pre-commit==4.3.0",
+    "pre-commit==4.4.0",
 ]
 post-install-commands = []
 
