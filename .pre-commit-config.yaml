@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: "cc981fcb065527b6de0033b0cbf0432e69781901"  # frozen: v4.9.1
+    rev: "9f3ec868c0429155a46b4819b625d47a8522a3d5"  # frozen: v4.10.0
     hooks:
       - id: commitizen
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -9,7 +9,7 @@ repos:
       - id: end-of-file-fixer
       - id: trailing-whitespace
   - repo: https://github.com/psf/black
-    rev: "af0ba72a73598c76189d6dd1b21d8532255d5942"  # frozen: 25.9.0
+    rev: "05f0a8ce1f71fbb36e1e032d3b518c7b945089a2"  # frozen: 25.11.0
     hooks:
       - id: black
   - repo: https://github.com/pycqa/isort
@@ -35,7 +35,7 @@ repos:
           - tomli ; python_version < '3.11'
         id: codespell
   - repo: https://github.com/asottile/pyupgrade
-    rev: 'f90119b1b8bd9e46949d9592972b2c4c27d62a97'  # frozen: v3.21.0
+    rev: '46c3d526905780be88d227f46e19f24f2593fbbe'  # frozen: v3.21.1
     hooks:
       - id: pyupgrade
         args:
