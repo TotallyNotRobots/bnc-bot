@@ -32,7 +32,7 @@ async def call_func(
     if is_coro(func):
         return await func(*args, **kwargs)
 
-    func = cast(Callable[..., _T], func)
+    func = cast("Callable[..., _T]", func)
     return await loop.run_in_executor(None, partial(func, *args, **kwargs))
 
 

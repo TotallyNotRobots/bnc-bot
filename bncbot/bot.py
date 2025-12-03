@@ -70,9 +70,7 @@ def command(
         )
 
         cmd = Command(name, func, admin, require_param, doc)
-        HANDLERS["command"].update(
-            {alias: cmd for alias in chain((name,), aliases)}
-        )
+        HANDLERS["command"].update(dict.fromkeys(chain((name,), aliases), cmd))
         return func
 
     return _decorate
