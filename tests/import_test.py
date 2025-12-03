@@ -5,6 +5,6 @@
 
 
 def test_importing_main() -> None:
-    import bncbot.__main__  # pylint: disable=import-outside-toplevel
+    import bncbot.__main__  # noqa: PLC0415
 
     assert bncbot.__main__ is not None
