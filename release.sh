@@ -2,7 +2,7 @@
 set -euo pipefail
 
 changelog_file="$(mktemp)"
-cz bump --yes --changelog-to-stdout --git-output-to-stderr > "$changelog_file"
+cz bump --allow-no-commit --yes --changelog-to-stdout --git-output-to-stderr > "$changelog_file"
 
 git push origin main
 sleep 1
