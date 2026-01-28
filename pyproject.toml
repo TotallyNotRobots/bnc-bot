@@ -59,7 +59,7 @@ type = "pip-compile"
 dependencies = [
     "pre-commit==4.5.1",
     "pytest==9.0.2",
-    "hatch-pip-compile==1.11.5",
+    "hatch-pip-compile==1.11.6",
     "pip==25.2",
 ]
 pip-compile-hashes = true
