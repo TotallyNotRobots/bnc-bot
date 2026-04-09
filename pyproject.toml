@@ -58,7 +58,7 @@ requires = [
 type = "pip-compile"
 dependencies = [
     "pre-commit==4.5.1",
-    "pytest==9.0.2",
+    "pytest==9.0.3",
     "hatch-pip-compile==1.11.6",
     "pip==25.2",
 ]
