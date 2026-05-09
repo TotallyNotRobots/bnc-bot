@@ -11,6 +11,5 @@
         "editor.wordBasedSuggestions": "off",
         "editor.defaultFormatter": "ms-python.black-formatter"
     },
-    "python.analysis.diagnosticMode": "workspace",
-    "python-envs.pythonProjects": []
+    "python.analysis.diagnosticMode": "workspace"
 }

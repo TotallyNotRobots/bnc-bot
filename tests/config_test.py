@@ -30,16 +30,15 @@ def test_save_data(tmp_path: Path) -> None:
     data.users["foo"] = "bar"
     data.save_config(data_file)
 
-    assert (
-        data_file.read_text(encoding="utf-8")
-        == """\
+    expected = """\
 {
     \"queue\": {},
     \"users\": {
         \"foo\": \"bar\"
     }
 }"""
-    )
+
+    assert data_file.read_text(encoding="utf-8") == expected
 
     data1 = BNCData.load_config(data_file)
     assert data == data1
