@@ -60,7 +60,7 @@ dependencies = [
     "pre-commit==4.6.0",
     "pytest==9.0.3",
     "hatch-pip-compile==1.11.6",
-    "pip==26.1.1",
+    "pip==26.1.2",
 ]
 pip-compile-hashes = true
 pip-compile-resolver = "uv"
