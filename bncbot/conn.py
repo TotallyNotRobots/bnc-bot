@@ -153,7 +153,11 @@ class Conn:
         )
 
     def start_timers(self) -> None:
-        self.create_timer(timedelta(hours=8), self.get_user_hosts)
+        self.create_timer(
+            timedelta(hours=8),
+            self.get_user_hosts,
+            initial_interval=timedelta(hours=8),
+        )
 
     def send(self, *parts: str) -> None:
         if not self._protocol:
