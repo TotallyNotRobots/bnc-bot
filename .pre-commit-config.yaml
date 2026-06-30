@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: "e5c25c3d6d68edd767ae513d48c55f63d21b4b9e"  # frozen: v4.15.1
+    rev: "a6859a7b8182086a5e013deab8fefc0597b502e9"  # frozen: v4.16.4
     hooks:
       - id: commitizen
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -9,7 +9,7 @@ repos:
       - id: end-of-file-fixer
       - id: trailing-whitespace
   - repo: https://github.com/psf/black
-    rev: "c6755bb741b6481d6b3d3bb563c83fa060db96c9"  # frozen: 26.3.1
+    rev: "87928e6d6761a4a6d22250e1fee5601b3998086e"  # frozen: 26.5.1
     hooks:
       - id: black
   - repo: https://github.com/pycqa/isort
