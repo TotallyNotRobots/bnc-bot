@@ -1,3 +1,16 @@
+## 0.1.2 (2026-06-30)
+
+### Fix
+
+- **deps**: update dependency typer to v0.26.8
+- **conn**: wait before running data update
+- **deps**: update dependency typer to v0.26.1
+- **deps**: update dependency pydantic to v2.13.4
+- **deps**: update dependency typer to v0.25.1
+- **deps**: update dependency typer to v0.21.2
+- correct lint error in tests
+- **deps**: update dependency typer to v0.21.1
+
 ## 0.1.1 (2025-12-05)
 
 ## 0.1.0 (2025-12-05)
