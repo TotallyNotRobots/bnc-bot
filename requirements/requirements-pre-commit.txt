@@ -4,13 +4,13 @@
 # - pre-commit==4.6.1
 # - pytest==9.1.1
 # - hatch-pip-compile==1.11.6
-# - pip==26.2
+# - pip==26.2.1
 # - pre-commit==4.6.1
 # - async-irc==0.3.0
 # - typing_extensions==4.16.0
 # - pydantic==2.13.4
 # - aiofiles==25.1.0
-# - typer==0.27.0
+# - typer==0.27.1
 #
 
 aiofiles==25.1.0 \
@@ -317,9 +317,9 @@ pexpect==4.9.0 \
     --hash=sha256:7236d1e080e4936be2dc3e326cec0af72acf9212a7e1d060210e70a47e253523 \
     --hash=sha256:ee7d41123f3c9911050ea2c2dac107568dc43b2d3b0c7557a33212c398ead30f
     # via hatch
-pip==26.2 \
-    --hash=sha256:2d8542afcc84cdd8e846c2b36b2861fad1da376dd98f8e7113e9108a3c331690 \
-    --hash=sha256:931c303696af6fa3417112103b1cad26890e5a07eccb5b99783700e33f2b8aad
+pip==26.2.1 \
+    --hash=sha256:71138adf1f4ca900cdb7d289c21b7494329f2332b6d85f0e1c42108c0384ed3e \
+    --hash=sha256:f6ad667e89a1fe78046c8f13232b247200f5258d7828f3f7883d660878e0813f
     # via
     #   hatch.envs.pre-commit
     #   pip-tools
@@ -618,9 +618,9 @@ truststore==0.10.4 \
     # via
     #   httpcore2
     #   httpx2
-typer==0.27.0 \
-    --hash=sha256:629bd12ea5d13a17148125d9a264f949eb171fb3f120f9b04d85873cab054fa5 \
-    --hash=sha256:6f4b27631e47f077871b7dc30e933ec0131c1390fbe0e387ea5574b5bac9ccf1
+typer==0.27.1 \
+    --hash=sha256:53150287edd11baeb4e4722c8e394fcdf8181c0ae89485cba8d25c778d5edd56 \
+    --hash=sha256:a79bef8469a79c45498e7b814ecf8d603cc7644e9acbd9e19cac0334240b18df
     # via hatch.envs.pre-commit
 typing-extensions==4.16.0 \
     --hash=sha256:481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8 \
