@@ -254,6 +254,14 @@ class Conn:
 
         return True
 
+    def client_connect_info(self) -> str:
+        return (
+            f"(Ports: {self.config.client_ssl_port} for SSL - "
+            f"{self.config.client_non_ssl_port} for NON-SSL) "
+            f"Help: /server {self.config.server} "
+            f"{self.config.client_non_ssl_port}"
+        )
+
     def is_admin(self, mask: str) -> bool:
         return any(fnmatch(mask.lower(), pat.lower()) for pat in self.admins)
 
@@ -304,12 +312,14 @@ class Conn:
         self.module_msg("controlpanel", f"Set Ident {username} {nick}")
         self.module_msg("controlpanel", f"Set Realname {username} {nick}")
         self.send("znc saveconfig")
-        self.module_msg("controlpanel", f"reconnect {username} Snoonet")
+        self.module_msg(
+            "controlpanel", f"reconnect {username} {self.config.bnc_network}"
+        )
         self.msg(
             "MemoServ",
             f"SEND {nick} Your BNC auth is Username: {username} Password: "
-            f"{passwd} (Ports: 5457 for SSL - 5456 for NON-SSL) Help: "
-            f"/server bnc.snoonet.org 5456 and /PASS {username}:{passwd}",
+            f"{passwd} {self.client_connect_info()} and /PASS "
+            f"{username}:{passwd}",
         )
         self.bnc_users[username] = host
         self.save_data()

@@ -30,6 +30,9 @@ class BotConfig(FileBasedDataModel):
     server: str = "bnc.snoonet.org"
     port: int = 5457
     ssl: bool = True
+    bnc_network: str = "Snoonet"
+    client_ssl_port: int = 5457
+    client_non_ssl_port: int = 5456
     admins: list[str] = ["*!*@snoonet/staff/*", "*!*@snoonet/manager/*"]
     log_channel: str = "##log_channel"
     command_prefix: str = "."
