@@ -5,6 +5,9 @@
     "server": "bnc.snoonet.org",
     "port": 5457,
     "ssl": true,
+    "bnc_network": "Snoonet",
+    "client_ssl_port": 5457,
+    "client_non_ssl_port": 5456,
     "admins": [
         "*!*@snoonet/staff/*",
         "*!*@snoonet/manager/*",
