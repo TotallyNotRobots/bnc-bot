@@ -32,7 +32,7 @@ jobs:
         uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c # v4.2.0
 
       - name: Install Hatch
-        uses: pypa/hatch@257e27e51a6a5616ed08a39a408a21c35c9931bc # install
+        uses: pypa/hatch@f647ed70d49adb885f53a27d1c7f5bdaeacf2c60 # install
         with:
           version: "${{ env.HATCH_VERSION }}"
 
