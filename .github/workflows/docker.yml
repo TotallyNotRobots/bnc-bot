@@ -9,7 +9,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  HATCH_VERSION: "1.18.0"
+  HATCH_VERSION: "1.18.1"
 
 jobs:
   build-and-push-image:
