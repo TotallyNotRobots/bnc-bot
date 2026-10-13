@@ -51,7 +51,7 @@ version-file = "bncbot/_version.py"
 
 [tool.hatch.envs.default]
 dependencies = [
-    "pre-commit==4.6.2",
+    "pre-commit==4.7.0",
     "pytest==9.1.1",
     "pip==26.2.1",
 ]
@@ -82,7 +82,7 @@ post-install-commands = []
 
 [tool.hatch.envs.pre-commit]
 extra-dependencies = [
-    "pre-commit==4.6.2",
+    "pre-commit==4.7.0",
 ]
 post-install-commands = []
 
