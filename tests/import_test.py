@@ -5,6 +5,6 @@
 
 
 def test_importing_main() -> None:
-    import bncbot.__main__  # noqa: PLC0415
+    import bncbot.__main__
 
     assert bncbot.__main__ is not None
