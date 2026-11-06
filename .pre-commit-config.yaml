@@ -13,7 +13,7 @@ repos:
     hooks:
       - id: nitpick
   - repo: "https://github.com/TotallyNotRobots/check-spdx-header"
-    rev: '7b32924b95a8a529c388fd5abf41dcca901b42bc'  # frozen: 0.3.2
+    rev: 'ed28eb6be326b6b874764dc83c0a9ced60712f54'  # frozen: 0.4.0
     hooks:
       - id: fix-spdx-header
   - repo: https://github.com/ikamensh/flynt
@@ -65,7 +65,7 @@ repos:
           - --inline-comment-spaces
           - '1'
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: '25bcf95026b96e2dd3c0aec3090c3d6ef6ca2e6c'  # frozen: v0.17.3
+    rev: 'c0f278f1254ccc8fb09676bcdb8d847e7db493e5'  # frozen: v0.17.4
     hooks:
       - id: ruff-check
         args:
