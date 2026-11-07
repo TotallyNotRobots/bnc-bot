@@ -94,7 +94,7 @@ install = "pre-commit install -f"
 template = "hatch-test"
 extra-dependencies = [
     "mypy==2.4.1",
-    "types-aiofiles==25.1.0.20260518",
+    "types-aiofiles==25.1.0.20261107",
 ]
 post-install-commands = []
 
