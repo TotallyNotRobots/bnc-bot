@@ -213,6 +213,7 @@ extend-ignore = [
     "PYI018",
     "PT006",
 ]
+ignore = ["CPY001", "COM812", "ISC001", "EXE002"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/*.py" = [
@@ -232,9 +233,21 @@ convention = "google"
 remove-all-unused-imports = true
 in-place = true
 
+[tool.pytest]
+minversion = "9.0"
+addopts = ["--doctest-modules"]
+filterwarnings = ["error"]
+
 [tool.pytest.ini_options]
 filterwarnings = ["error"]
 asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"
 minversion = "8.0"
 addopts = ["--doctest-modules"]
+
+[tool.basedpyright]
+analyzeUnannotatedFunctions = true
+reportUnusedCallResult = "none"
+reportImplicitStringConcatenation = "none"
+reportImportCycles = "none"
+pythonVersion = "3.10"
