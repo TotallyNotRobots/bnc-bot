@@ -1,15 +1,26 @@
 {
-    "python.testing.pytestArgs": [
-        "."
-    ],
-    "python.testing.unittestEnabled": false,
-    "python.testing.pytestEnabled": true,
-    "python.analysis.enablePytestSupport": true,
-    "[python]": {
-        "diffEditor.ignoreTrimWhitespace": false,
-        "editor.formatOnType": true,
-        "editor.wordBasedSuggestions": "off",
-        "editor.defaultFormatter": "charliermarsh.ruff"
+  "[python]": {
+    "diffEditor.ignoreTrimWhitespace": false,
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.formatOnType": true,
+    "editor.wordBasedSuggestions": "off"
+  },
+  "basedpyright": {
+    "analysis": {
+      "baselineMode": "discard"
+    }
+  },
+  "python": {
+    "analysis": {
+      "diagnosticMode": "workspace",
+      "enablePytestSupport": true
     },
-    "python.analysis.diagnosticMode": "workspace"
+    "testing": {
+      "pytestArgs": [
+        "."
+      ],
+      "pytestEnabled": true,
+      "unittestEnabled": false
+    }
+  }
 }
